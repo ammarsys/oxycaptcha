@@ -23,3 +23,5 @@ py -m pip install requirements.txt
 ```
 
 Its intended for discord bots BUT it can be used for web development (if you don't really care about the security) and other projects as the image has basic encryption solution. You may want to make it a bit more tougher to decrypt if you decide to use it. (ex: reversing the string, hex/binary/other stuff encryption, ...)
+
+This version is a new, fast and completely rewritten API, originally by Vixen, which was discontinued.
