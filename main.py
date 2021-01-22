@@ -3,10 +3,10 @@ import os, secrets, base64
 
 app = Flask(__name__)
 
-# /home/ammarsysdev/mysite
 @app.route('/get_img/<path>')
 def get_img(path):
     try:
+        path = path[::-1]
         v1 = base64.b64decode(path.encode('utf-8'))
         return send_from_directory('C:/Users/scorz/Desktop/flaskapi/images/', v1.decode())
     except:
@@ -22,7 +22,7 @@ def api_captcha():
     v2 = captcha2.split('.png')[0]
     v3 = base64.b64encode(captcha2.encode('utf-8'))
     dictv1 = {
-        "url": f"http://127.0.0.1:5000/get_img/{v3.decode('utf-8')}",
+        "url": f"http://127.0.0.1:5000/get_img/{v3.decode('utf-8')[::-1]}",
         "solution": v2
     }
     return jsonify(dictv1)
