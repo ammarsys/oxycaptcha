@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, render_template, jsonify, redirect
 import base64
 from PIL import ImageDraw, Image, ImageFont, ImageFilter
-import json, secrets, random
+import secrets, random
 
 app = Flask(__name__)
 
@@ -14,8 +14,6 @@ font = [
     ImageFont.truetype("./fonts/gadugib.ttf", 19),
     ImageFont.truetype("./fonts/Chalkduster_400.ttf", 19)
 ]
-
-curr_json = load_json()
 
 @app.route('/get_img/<path>')
 def get_img(path):
