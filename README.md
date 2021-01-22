@@ -5,7 +5,7 @@ I made this API so I can use it alongside https://github.com/Ammar-sys/essential
 
 ## wrappers
 
- - Typescript: https://www.npmjs.com/package/essentials-captcha
+ - JavaScript: https://www.npmjs.com/package/essentials-captcha
  - Repository & Creator: https://github.com/SpeckyYT/essentials-captcha#readme
 
 ## manual install
