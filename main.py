@@ -5,11 +5,6 @@ import json, secrets, random
 
 app = Flask(__name__)
 
-def load_json():
-    with open('./config.json', 'r') as f:
-        data = json.load(f)
-    return data
-
 def random_char(y):
     str1 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     return ''.join(secrets.choice(str1) for _ in range(y))
@@ -38,7 +33,6 @@ def docs():
 
 @app.route('/api/img')
 def api_captcha():
-    for _ in range(0, curr_json["number_to_generate"]):
         text_color = (random.randint(150, 255), 255, random.randint(150, 255))
         image_color = (secrets.randbelow(255), random.randint(50, 125), secrets.randbelow(255))
 
