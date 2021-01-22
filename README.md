@@ -1,5 +1,5 @@
 # Captcha API
-I made this API so I can use it alongside https://github.com/Ammar-sys/essentials discord bot and I've decided to make it public. The beta of the API is live at https://ammarsysdev.pythonanywhere.com/ . I need to upload more images, im new to pythonanywhere and I am still figuring it out.
+I made this API so I can use it alongside https://github.com/Ammar-sys/essentials discord bot and I've decided to make it public. The API is live at https://ammarsysdev.pythonanywhere.com/ . Please let me know if you run into any issues.
 
 # USAGE
 
