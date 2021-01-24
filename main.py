@@ -27,7 +27,7 @@ def get_img(path):
 
 @app.route('/docs')
 def docs():
-    return redirect('https://docs.google.com/document/d/1sSMj9TFUGgGhSCYjEcHGKib5wSbTCCkw9YaHbGMXkYU/edit?usp=sharing')
+    return redirect('docs.html')
 
 @app.route('/api/img')
 def api_captcha():
