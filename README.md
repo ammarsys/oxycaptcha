@@ -1,26 +1,36 @@
 # Captcha API
-I made this API so I can use it alongside https://github.com/Ammar-sys/essentials discord bot and I've decided to make it public. The API is live at https://ammarsysdev.pythonanywhere.com/ . Please let me know if you run into any issues.
+### *By Ammar*
+![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)
 
-# USAGE
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
-## wrappers
+[![made-with-Markdown](https://img.shields.io/badge/Made%20with-Markdown-1f425f.svg)](http://commonmark.org)
 
- - JavaScript: https://www.npmjs.com/package/essentials-captcha
- - Repository & Creator: https://github.com/SpeckyYT/essentials-captcha#readme
+[![CC-0 license](https://img.shields.io/badge/License-CC--0-blue.svg)](https://creativecommons.org/licenses/by-nd/4.0)
 
-## manual install
+## Info
+I made this API so I can use it alongside [Essentials Discord Bot](https://github.com/Ammar-sys/essentials) and I've decided to make it public. The API is live at [PythonAnywhere](https://ammarsysdev.pythonanywhere.com/). Tell me [here](https://github.com/Ammar-sys/captchaAPI/issues) if you run into issues
+
+## USAGE
+
+### Wrappers
+
+ - [JavaScript](https://www.npmjs.com/package/essentials-captcha)
+ - [Repository & Creator](https://github.com/SpeckyYT/essentials-captcha#readme)
+
+### Manual Install
  
  Make sure to go through the files and edit paths. (both py files)
  
  To install the necessary modules for this to run do
 
-```
+```python
 pip install requirements.txt
 ``` 
 
 Incase that doesn't work, try:
 
-```
+```python
 py -m pip install requirements.txt
 ```
 
