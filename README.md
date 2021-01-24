@@ -19,6 +19,7 @@ I made this API so I can use it alongside [Essentials Discord Bot](https://githu
  - [Repository & Creator](https://github.com/SpeckyYT/essentials-captcha#readme)
 
 ### Manual Install
+##### [*Click here for better manual installation instructions*](https://www.notion.so/Captcha-API-abdfa9436fe0448dad0e5c2eb6858729)
  
  Make sure to go through the files and edit paths. (both py files)
  
