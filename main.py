@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, render_template, jsonify, redirect
+from flask import Flask, send_from_directory, render_template, jsonify, request
 import base64
 from PIL import ImageDraw, Image, ImageFont, ImageFilter
 import secrets, random
@@ -27,10 +27,17 @@ def get_img(path):
 
 @app.route('/docs')
 def docs():
-    return redirect('docs.html')
+    return render_template('docs.html')
 
 @app.route('/api/img')
 def api_captcha():
+    page = request.args.get('count', default=1, type=int)
+
+    if page < 1 or page > 5:
+        return render_template('404pg.html')
+
+    m = []
+    for _ in range(page):
         text_color = (random.randint(150, 255), 255, random.randint(150, 255))
         image_color = (secrets.randbelow(255), random.randint(50, 125), secrets.randbelow(255))
 
@@ -47,12 +54,25 @@ def api_captcha():
         captcha2 = f'{text}.png'
         v2 = captcha2.split('.png')[0]
         v3 = base64.b64encode(captcha2.encode('utf-8'))
+
+        m.append(('http://127.0.0.1:5000/get_img/' + v3.decode('utf-8')[::-1], v2))
+
+    if len(m) == 1:
         dictv1 = {
-            "url": f"http://127.0.0.1:5000/get_img/{v3.decode('utf-8')[::-1]}",
-            "solution": v2
+            "url": f"{m[0][0]}",
+            "solution": m[0][1]
         }
         return jsonify(dictv1)
-
+    dictv2 = {
+        "url": [
+            [x[0] for x in m]
+        ],
+        "solution": [
+            [x[1] for x in m]
+        ]
+    }
+    return jsonify(dictv2)
+                     
 @app.route('/')
 def home():
     return render_template("index.html")
