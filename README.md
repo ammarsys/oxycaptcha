@@ -1,5 +1,4 @@
 # Captcha API
-### *By Ammar*
 ![Open Source? Yes!](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
@@ -15,7 +14,6 @@ I made this API so I can use it alongside [Essentials Discord Bot](https://githu
  - [Repository & Creator](https://github.com/SpeckyYT/essentials-captcha#readme)
 
 ### Manual Install
-##### [*Click here for better manual installation instructions*](https://www.notion.so/Captcha-API-abdfa9436fe0448dad0e5c2eb6858729)
  
  Make sure to go through the files and edit paths. (both py files)
  
