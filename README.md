@@ -4,7 +4,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
 ## Info
-I made this API so I can use it alongside [Essentials Discord Bot](https://github.com/Ammar-sys/essentials) and I've decided to make it public. The API is live at [PythonAnywhere](https://ammarsysdev.pythonanywhere.com/). Tell me [here](https://github.com/Ammar-sys/captchaAPI/issues) if you run into issues
+I made this API so I can use it alongside [Essentials Discord Bot](https://github.com/Ammar-sys/essentials) and I've decided to make it public. The API is live at [PythonAnywhere](https://ammarsysdev.pythonanywhere.com/). Tell us [here](https://github.com/Ammar-sys/captchaAPI/issues) if you run into issues, discord works as well. (ammar#0443)
 
 ## USAGE
 
