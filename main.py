@@ -114,7 +114,7 @@ def do_Cleanup():
             requests.post(url,
                           data={
                               'username': 'CaptchaAPI cleanup',
-                              'message': msg.format(len(files), datetime.datetime.now())
+                              'content': msg.format(len(files), datetime.datetime.now())
                           })
         time.sleep(500)
 
