@@ -29,8 +29,6 @@ Incase that doesn't work, try:
 py -m pip install requirements.txt
 ```
 
-It's recommended to run both clean_up.py and main.py. Clean_up.py deletes captchas in the folder in order to save storage
-
-Its intended for discord bots BUT it can be used for web development (if you don't really care about good security) and other projects as the image has basic encryption. You may want to make it a bit more tougher to decrypt if you decide to use it in web development, for discord bots it's more than fine.
+This API is intended for discord bots (by this I mean it suits them the best, this probally isn't good for stuff like web development) but it can be used for other fields and other projects, for discord bots it should be fine
 
 This version is a new, fast and completely rewritten API, originally by Vixen, which was discontinued.
