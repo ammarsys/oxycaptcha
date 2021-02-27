@@ -4,7 +4,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
 ## Info
-I made this API so I can use it alongside [Essentials Discord Bot](https://github.com/Ammar-sys/essentials) and I've decided to make it public. The API is live at [PythonAnywhere](https://ammarsysdev.pythonanywhere.com/). Tell us [here](https://github.com/Ammar-sys/captchaAPI/issues) if you run into issues, discord works as well. (ammar#0443)
+I made this API so I can use it alongside [Essentials Discord Bot](https://github.com/Ammar-sys/essentials) and I've decided to make it public. The API is live at [PythonAnywhere](https://pythonanywhere.com/) (specifically, https://ammarsysdev.pythonanywhere.com/). Tell us [here](https://github.com/Ammar-sys/captchaAPI/issues) if you run into issues, discord works as well. (ammar#0443)
 
 ## USAGE
 
@@ -13,20 +13,32 @@ I made this API so I can use it alongside [Essentials Discord Bot](https://githu
  - [JavaScript](https://www.npmjs.com/package/essentials-captcha)
  - [Repository & Creator](https://github.com/SpeckyYT/essentials-captcha#readme)
 
-### Manual Install
- 
- Make sure to go through the files and edit paths. (both py files)
- 
- To install the necessary modules for this to run do
+### Manual Usage
+
+Simply make a HTTP get request to the API endpoint and treat it like a JSON.
 
 ```python
-pip install requirements.txt
-``` 
+import requests
 
-Incase that doesn't work, try:
+response = requests.get('ammarsysdev.pythonanywhere/api/img).json()
+
+print(response["solution"], response["url"])
+```
+
+or, if you'd like a async request
 
 ```python
-py -m pip install requirements.txt
+import aiohttp
+import asyncio
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        async with session.get('http://ammarsysdev.pythonanywhere.com/api/img') as responseget:
+            return await responseget.json()
+
+loop = asyncio.get_event_loop()
+response = loop.run_until_complete(main())
+print(response["solution"], response["url"])
 ```
 
 This API is intended for discord bots (by this I mean it suits them the best, this probally isn't good for stuff like web development) but it can be used for other fields and other projects, for discord bots it should be fine
