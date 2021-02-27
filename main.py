@@ -1,9 +1,19 @@
 from flask import Flask, send_from_directory, render_template, jsonify, request
 import base64
 from PIL import ImageDraw, Image, ImageFont, ImageFilter
-import secrets, random
+import json
+import secrets
+import random
+import os
+import time
+import threading
 
 app = Flask(__name__)
+
+def load_json():
+    with open('./config.json', 'r') as f:
+        data = json.load(f)
+    return data
 
 def random_char(y):
     str1 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -14,6 +24,8 @@ font = [
     ImageFont.truetype("./fonts/gadugib.ttf", 19),
     ImageFont.truetype("./fonts/Chalkduster_400.ttf", 19)
 ]
+
+curr_json = load_json()
 
 @app.route('/get_img/<path>')
 def get_img(path):
@@ -43,9 +55,13 @@ def api_captcha():
 
         img = Image.new('RGB', (100, 30), color=image_color)
         d = ImageDraw.Draw(img)
-
-        for _ in range(0, secrets.randbelow(20)):
-            d.line((secrets.randbelow(100), secrets.randbelow(100)) + img.size, fill=secrets.randbelow(100))
+        color_line = [
+            (random.randint(150, 255), random.randint(150, 255), random.randint(150, 255)),
+            (random.randint(150, 255), random.randint(150, 255), random.randint(150, 255)),
+            (random.randint(150, 255), random.randint(150, 255), random.randint(150, 255))
+        ]
+        for _ in range(0, random.randint(5, 20)):
+            d.line((random.randint(0, 100), random.randint(10, 30)) + img.size, fill=secrets.choice(color_line))
 
         text = random_char(5)
         d.text((24, 5), f"{text}", fill=text_color, font=secrets.choice(font))
@@ -72,7 +88,7 @@ def api_captcha():
         ]
     }
     return jsonify(dictv2)
-                     
+
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -81,5 +97,15 @@ def home():
 def not_found(e):
     return render_template("404pg.html")
 
+def do_Cleanup():
+    while True:
+        files = os.listdir('./images')
+        if len(files) > 10:
+            for file in files:
+                os.remove(f'./images/{file}')
+            print('Successfully did a cleanup!')
+        time.sleep(500)
+
 if __name__ == '__main__':
+    threading.Thread(target=do_Cleanup).start()
     app.run(debug=True)
