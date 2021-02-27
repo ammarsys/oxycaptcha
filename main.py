@@ -5,8 +5,10 @@ import json
 import secrets
 import random
 import os
-import time
+import datetime
 import threading
+import requests
+import time
 
 app = Flask(__name__)
 
@@ -56,9 +58,9 @@ def api_captcha():
         img = Image.new('RGB', (100, 30), color=image_color)
         d = ImageDraw.Draw(img)
         color_line = [
-            (random.randint(150, 255), random.randint(150, 255), random.randint(150, 255)),
-            (random.randint(150, 255), random.randint(150, 255), random.randint(150, 255)),
-            (random.randint(150, 255), random.randint(150, 255), random.randint(150, 255))
+            (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+            (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         ]
         for _ in range(0, random.randint(5, 20)):
             d.line((random.randint(0, 100), random.randint(10, 30)) + img.size, fill=secrets.choice(color_line))
@@ -97,13 +99,23 @@ def home():
 def not_found(e):
     return render_template("404pg.html")
 
+url = 'your webhook url here'
+msg = """
+Successfully did a clean up of `{}` files.
+Time of clean up: `{}`
+*captchaapi*
+"""
 def do_Cleanup():
     while True:
         files = os.listdir('./images')
         if len(files) > 10:
             for file in files:
                 os.remove(f'./images/{file}')
-            print('Successfully did a cleanup!')
+            requests.post(url,
+                          data={
+                              'username': 'CaptchaAPI cleanup',
+                              'message': msg.format(len(files), datetime.datetime.now())
+                          })
         time.sleep(500)
 
 if __name__ == '__main__':
