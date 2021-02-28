@@ -1,7 +1,6 @@
 from flask import Flask, send_from_directory, render_template, jsonify, request
 import base64
 from PIL import ImageDraw, Image, ImageFont, ImageFilter
-import json
 import secrets
 import random
 import os
@@ -48,7 +47,7 @@ def api_captcha():
     page = request.args.get('count', default=1, type=int)
 
     if page < 1 or page > 5:
-        return render_template('404pg.html')
+        return render_template('invalid_usage.html')
 
     m = []
     for _ in range(page):
