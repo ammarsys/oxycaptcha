@@ -44,6 +44,10 @@ def get_img(path):
 def docs():
     return render_template('docs.html')
 
+@app.route('/example', methods=['GET', 'POST', 'HEAD'])
+def examplejs():
+    return render_template('example.html')
+
 @app.route('/api/img')
 def api_captcha():
     page = request.args.get('count', default=1, type=int)
