@@ -8,23 +8,29 @@
                         return data
                     })
                     .then((data) => {
+                        var curCaptcha = document.getElementById("captcha")
+                        if (curCaptcha != null) {
+                            curCaptcha.remove();
+                        }
                         var x = document.createElement("img");
+                        document.getElementById("imgContainer").appendChild(x); ;
                         x.src = data['url'];
                         x.alt = "Uh-oh, couldn't load the image :(";
-                        document.body.appendChild(x);
+                        x.id = "captcha"
                     });
             }
             function validateForm() {
                 var x = document.forms["myForm"]["fname"].value;
                 if (x == "") {
-                    alert("Type somethin bruh");
+                    alert("Please enter the code!");
                     return false;
                     }
                 if (x != captcha_solution) {
-                    alert('Wrong betch')
+                    alert('Incorrect code!')
                     return false;
                     } else {
-                    alert('Gj')
+                    alert('Correct code!')
                     return true;
                     }
                 }
+            test();
