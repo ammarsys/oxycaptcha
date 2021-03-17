@@ -43,6 +43,6 @@ print(response["solution"], response["url"])
 
 *(check examples folder for a javascript example)*
 
-This API is intended for discord bots (by this I mean it suits them the best, this probally isn't good for stuff like web development) but it can be used for other fields and other projects, for discord bots it should be fine
+This API is intended for discord bots, but it can be used for web development for a example, soon i'll release a *good* example (note you have to implement it yourself).
 
 This version is a new, fast and completely rewritten API, originally by Vixen, which was discontinued.
