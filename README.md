@@ -20,7 +20,7 @@ Simply make a HTTP get request to the API endpoint and treat it like a JSON.
 ```python
 import requests
 
-response = requests.get('ammarsysdev.pythonanywhere/api/img).json()
+response = requests.get('ammarsysdev.pythonanywhere/api/img').json()
 
 print(response["solution"], response["url"])
 ```
