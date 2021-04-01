@@ -1,4 +1,6 @@
-            captcha_solution = ""
+         // AN UNSAFE EXAMPLE, PLEASE REWRITE. WONDERING IF YOUR IMPLEMENTATION IS SAFE? ASK YOURSELF IF YOU HAVE TO HIDE THE CODE FROM SOMEONE, IF YES, ITS UNSAFE
+
+         captcha_solution = ""
             function test() {
                 let site = 'https://ammarsysdev.pythonanywhere.com/api/img'
                 fetch(site)
