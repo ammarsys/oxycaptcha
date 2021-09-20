@@ -159,7 +159,7 @@ def api_captcha():
     delta = datetime.timedelta(minutes=5)
     now = datetime.datetime.utcnow()
 
-    solution = id_generator(y=secrets.choice((4, 6)), choice=secrets.choice)
+    solution = id_generator(y=secrets.choice((4, 5)), choice=secrets.choice)
 
     id_ = base64.b64encode(
         bytes(
