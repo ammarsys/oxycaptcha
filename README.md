@@ -4,7 +4,7 @@ A lightweight Captcha API made with Flask. This version is a new, fast and compl
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
-The API is live at [PythonAnywhere](https://pythonanywhere.com/) (specifically, [here](https://ammarsysdev.pythonanywhere.com/)). 
+The API is live at [PythonAnywhere](https://pythonanywhere.com/) (specifically, [here](https://captchaAPI.pythonanywhere.com/)). 
 # Usage
 
 ### Wrappers
@@ -19,7 +19,7 @@ Simply make a HTTP get request to the API endpoint and treat it like a JSON.
 ```python
 import requests
 
-response = requests.get('https://ammarsysdev.pythonanywhere/api/img').json()
+response = requests.get('https://captchaAPI.pythonanywhere.com/api/img').json()
 
 print(response["solution"], response["url"])
 ```
@@ -32,7 +32,7 @@ import asyncio
 
 async def main():
     async with aiohttp.ClientSession() as session:
-        async with session.get('https://ammarsysdev.pythonanywhere.com/api/img') as responseget:
+        async with session.get('https://captchaAPI.pythonanywhere.com/api/img') as responseget:
             return await responseget.json()
 
 loop = asyncio.get_event_loop()
@@ -40,7 +40,9 @@ response = loop.run_until_complete(main())
 print(response["solution"], response["url"])
 ```
 
-For more examples check out https://ammarsysdev.pythonanywhere.com/examples !
+For more examples check out https://captchaAPI.pythonanywhere.com/examples !
+
+*For contributing please check out `CONTRIBUTING.md`*
 
 # Documentations
 
