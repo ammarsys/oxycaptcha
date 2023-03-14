@@ -26,16 +26,9 @@ import expiringdict
 from utils import noise
 
 app = Flask(__name__)
+app.captcha_count = 0
 CORS(app)
 captchas = expiringdict.ExpiringDict(max_age_seconds=120, max_len=float("inf"))
-
-
-class CaptchaCount:
-    """
-    A class for counting captchas to prevent duplicates in the captchas dictionary.
-    """
-
-    count: int = 0
 
 
 fonts_lower = [
@@ -164,7 +157,7 @@ def api_captcha():
 
     id_ = base64.b64encode(
         bytes(
-            f'{CaptchaCount.count}.{id_generator(y=10, choice=random.choice)}.{now.strftime("%S")[-5:]}',
+            f'{app.captcha_count}.{id_generator(y=10, choice=random.choice)}.{now.strftime("%S")[-5:]}',
             "utf-8",
         )
     ).decode()
