@@ -7,10 +7,7 @@ from PIL import Image
 
 
 def add_noise_lines(image: Image.Image) -> Image.Image:
-    """
-    Add noise lines to an image.
-
-    """
+    """Add noise lines to an image."""
     size = (305, 95)
 
     for _ in range(1):
@@ -28,10 +25,7 @@ def add_noise_lines(image: Image.Image) -> Image.Image:
 
 
 def salt_and_pepper(image: Image.Image, prob: float) -> Image.Image:
-    """
-    Add the "salt and pepper" effect to an image.
-
-    """
+    """Add the "salt and pepper" effect to an image."""
     arr = np.asarray(image)  # type: ignore
     original_dtype = arr.dtype
     intensity_levels = 2 ** (arr[0, 0].nbytes * 8)

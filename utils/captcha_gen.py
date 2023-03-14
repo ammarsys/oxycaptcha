@@ -31,6 +31,7 @@ def cap_gen(text: str) -> Image.Image:
 
     Returns:
         Image.Image: An image of the captcha generated using the given 'text'.
+
     """
     white = 255, 255, 255
     space, height = random.randint(5, 10), random.randint(5, 10)
