@@ -1,6 +1,6 @@
 # This repository is currently being remade
 
-The new version comes with a lot of features and a prettier front end. Chip in by leaving a ⭐ & wait for the v2 version.
+The new version comes with a lot of new captcha features and a prettier front end. Chip in by leaving a ⭐ & wait for the v2 version.
 
 # Captcha API
 
