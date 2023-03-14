@@ -1,7 +1,8 @@
 """Noise functions for the captchas."""
 
 import numpy as np
-import random
+import secrets
+
 from PIL import Image
 
 
@@ -9,21 +10,18 @@ def add_noise_lines(image: Image.Image) -> Image.Image:
     """
     Add noise lines to an image.
 
-    :param image: Images to add noise lines onto.
-    :type image: Image.Image
-    :return: Image.Image
     """
     size = (305, 95)
 
     for _ in range(1):
-        width = random.choice((1, 2))
-        start = (0, random.randint(0, size[1] - 1))
-        end = (size[0], random.randint(0, size[1] - 1))
+        width = secrets.choice((1, 2))
+        start = (0, secrets.choice(range(0, size[1] - 1)))
+        end = (size[0], secrets.choice(range(0, size[1] - 1)))
         image.line([start, end], fill="white", width=width)
 
     for _ in range(1):
         start = (-50, -50)
-        end = (size[0] + 10, random.randint(0, size[1] + 10))
+        end = (size[0] + 10, secrets.choice(range(0, size[1] + 10)))
         image.arc(start + end, 0, 360, fill="white")
 
     return image
@@ -33,11 +31,6 @@ def salt_and_pepper(image: Image.Image, prob: float) -> Image.Image:
     """
     Add the "salt and pepper" effect to an image.
 
-    :param image: image to add the effect on
-    :type image: Image.Image
-    :param prob: density of the sand and peper effect
-    :type prob: float
-    :return: Image.Image
     """
     arr = np.asarray(image)  # type: ignore
     original_dtype = arr.dtype
