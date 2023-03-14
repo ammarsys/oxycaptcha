@@ -1,3 +1,7 @@
+# This repository is currently being remade
+
+The new version comes with a lot of features and a prettier front end. Chip in by leaving a ⭐ & wait for the v2 version.
+
 # Captcha API
 
 A lightweight Captcha API made with Flask. This version is a new, fast and completely rewritten API, originally by Vixen, which was discontinued.
