@@ -43,7 +43,7 @@ def id_generator(y: int) -> str:
     return "".join(secrets.choice(string) for _ in range(y))
 
 
-@app.route("/api/cdn/<key>")
+@app.route("/api/v2/cdn/<key>")
 def get_img(key: str):
     """
     A Content Delivery Network (CDN) for serving captcha images.
@@ -77,7 +77,7 @@ def get_img(key: str):
         return redirect("/")
 
 
-@app.route("/api/img")
+@app.route("/api/v2/img")
 def api_captcha():
     """
     Endpoint for creating a dictionary key with the captcha ID and its related information. This route has an argument
