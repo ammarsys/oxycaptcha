@@ -77,7 +77,7 @@ def get_img(key: str):
         return redirect("/")
 
 
-@app.route("/api/v2/img")
+@app.route("/api/v2/captcha")
 def api_captcha():
     """
     Endpoint for creating a dictionary key with the captcha ID and its related information. This route has an argument
@@ -108,7 +108,7 @@ def api_captcha():
     app.captcha_count += 1
 
     return jsonify(
-        {"solution": solution, "url": urljoin(request.host_url, f"/api/cdn/{id_}")}
+        {"solution": solution, "url": urljoin(request.host_url, f"/api/v2/cdn/{id_}")}
     )
 
 
