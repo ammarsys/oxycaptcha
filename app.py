@@ -62,7 +62,7 @@ def get_img(key: str):
         captchas[key][3] += 1
 
         if not captchas[key][1]:
-            pil_image = noise.salt_and_pepper(cap_gen(text=captchas[key][0]), prob=0.13)
+            pil_image = cap_gen(text=captchas[key][0])
             captchas[key][1] = pil_image
         else:
             pil_image = captchas[key][1]

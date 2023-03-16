@@ -33,11 +33,13 @@ def cap_gen(text: str) -> Image.Image:
         Image.Image: An image of the captcha generated using the given 'text'.
 
     """
+    # Start with a random height and spacing
     white = 255, 255, 255
-    space, height = random.randint(5, 10), random.randint(5, 10)
+    space, height = random.randint(20, 25), random.randint(9, 17)
 
+    # Assign every letter a corresponding random font
     corresponding_font = {
-        let: random.choice(FONTS_UPPER if let.isupper() else FONTS_LOWER)
+        let: secrets.choice(FONTS_UPPER if let.isupper() else FONTS_LOWER)
         for let in text
     }
     text_positions = []
@@ -45,19 +47,22 @@ def cap_gen(text: str) -> Image.Image:
     img = Image.new("RGB", (300, 100), color=(128, 128, 128))
     img.load()
 
+    # Use relative spacing so that there isn't much of empty space on either of sides
     d = noise.add_noise_lines(ImageDraw.Draw(img))
+    relative_spacing = 200/len(text)
 
     for count, letter in enumerate(text):
         cords = space, height
-        d.text(cords, f"{letter}", fill=white, font=corresponding_font[letter])
+        d.text(cords, letter, fill=white, font=corresponding_font[letter])
 
-        space += secrets.choice(range(35, 45))
-        height += secrets.choice(range(1, 11))
+        space += relative_spacing + secrets.choice(range(7, 13))
+        height += secrets.choice((-1, 1))
 
         text_positions.append(tuple(secrets.randbelow(10) + 15 + i for i in cords))
 
-    value = secrets.randbelow(len(text_positions))
+    # Add a noise line relative to the text position
+    value = secrets.randbelow(len(text_positions)+2)
     for i in range(len(text_positions) - value):
         d.line((text_positions[i], text_positions[i + value]), fill=white, width=0)
 
-    return img
+    return noise.salt_and_pepper(img, prob=0.1)

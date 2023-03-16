@@ -40,3 +40,4 @@ def salt_and_pepper(image: Image.Image, prob: float) -> Image.Image:
     ).astype(original_dtype)
 
     return Image.fromarray(salt_and_peppered_arr)
+
