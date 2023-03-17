@@ -19,7 +19,7 @@ from flask_cors import CORS
 from utils import cap_gen, TTLCache
 
 app = Flask(__name__)
-app.captcha_count = 0
+app.captcha_count = 0  # type: ignore
 
 CORS(app)
 captchas: TTLCache[str, list] = TTLCache(ttl=30)
