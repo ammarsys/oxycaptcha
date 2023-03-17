@@ -4,6 +4,8 @@ import numpy as np
 import secrets
 import random
 
+from typing import Literal, Sequence
+
 from PIL import Image, ImageDraw
 
 
@@ -50,3 +52,63 @@ def salt_and_pepper(image: Image.Image, probability: float) -> Image.Image:
     return output_image
 
 
+def text_angled(img: Image.Image,
+               xy: tuple[float, float],
+               text: str | bytes,
+               fill = None,
+               font = None,
+               anchor: str = None,
+               spacing: float = 4,
+               align: Literal['left', 'center', 'right'] = "left",
+               direction: Literal['rtl', 'ltr', 'ttb'] = None,
+               features: Sequence[str] = None,
+               language: str = None,
+               stroke_width: int = 0,
+               stroke_fill = None,
+               embedded_color: bool = False,
+               angle: int = 0):
+    """Wrapper around ImageDraw but you can specify an angle for the text
+
+    Args:
+        img (PIL.Image.Image): The 'Image' to draw the text on
+        text (str): The text to draw
+        angle (int, optional): The angle for how much to rotate the text. Defaults to 0.
+        ...
+
+    Returns:
+        PIL.Image.Image: new 'Image' with the text on it
+    """
+
+    angle = int(angle)
+
+    # Create an ImageDraw object from the image
+    draw = ImageDraw.Draw(img)
+
+    # Get the size of the text
+    text_width, text_height = draw.textsize(text, font=font)
+    
+    # Create a new image to hold the rotated text
+    rotated_text_img = Image.new(mode="RGBA", size=(text_width, text_height), color=(0, 0, 0, 0))
+
+    rotated_text_draw = ImageDraw.Draw(rotated_text_img)
+
+    rotated_text_draw.text((0, 0), text, fill=fill,
+                           font=font, anchor=anchor, spacing=spacing,
+                           align=align, direction=direction, features=features,
+                           language=language, stroke_width=stroke_width,
+                           stroke_fill=stroke_fill, embedded_color=embedded_color)
+
+    # Rotate the text image by 'angle'
+    rotated_text_img = rotated_text_img.rotate(angle, expand=True)
+
+    #! This code draws the text from the center, uncomment if wanted
+    # img.paste(rotated_text_img,
+    #           (xy[0] - (rotated_text_img.width // 2), xy[1] - (rotated_text_img.height // 2)),
+    #           rotated_text_img)
+    #! This code draws the text from its top left corner
+    img.paste(rotated_text_img,
+              xy,
+              rotated_text_img)
+
+    # return new 'Image', sadly I couldn't find a way to make it in-place :(
+    return img
