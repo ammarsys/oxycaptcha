@@ -82,13 +82,7 @@ def text_angled(
     )
     rotated_text_draw = ImageDraw.Draw(rotated_text_img)
 
-    rotated_text_draw.text(
-        (0, 0),
-        text,
-        fill=fill,
-        font=font,
-        **kwargs
-    )
+    rotated_text_draw.text((0, 0), text, fill=fill, font=font, **kwargs)
 
     # Rotate the text image by 'angle'
     rotated_text_img = rotated_text_img.rotate(angle, expand=True)
