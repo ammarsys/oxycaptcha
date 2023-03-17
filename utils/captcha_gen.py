@@ -10,7 +10,9 @@ from utils import noise
 FONTS_LOWER = [
     ImageFont.truetype(os.path.join("fonts", "lower", "gadugib.ttf"), 34),
     ImageFont.truetype(os.path.join("fonts", "lower", "Chalkduster_400.ttf"), 34),
-    ImageFont.truetype(os.path.join("fonts", "lower", "ShadowsIntoLight-Regular.ttf"), 34),
+    ImageFont.truetype(
+        os.path.join("fonts", "lower", "ShadowsIntoLight-Regular.ttf"), 34
+    ),
     ImageFont.truetype(os.path.join("fonts", "lower", "Rajdhani-SemiBold.ttf"), 34),
 ]
 
@@ -48,20 +50,25 @@ def cap_gen(text: str) -> Image.Image:
     img.load()
 
     # Use relative spacing so that there isn't much of empty space on either of sides
-    d = noise.add_noise_lines(ImageDraw.Draw(img))
-    relative_spacing = 200/len(text)
+    relative_spacing = 200 // len(text)
 
     for count, letter in enumerate(text):
         cords = space, height
-        d.text(cords, letter, fill=white, font=corresponding_font[letter])
+
+        angle = secrets.choice(range(-20, 20))
+        img = noise.TextAngled(
+            img, cords, letter, fill=white, font=corresponding_font[letter], angle=angle
+        )
 
         space += relative_spacing + secrets.choice(range(7, 13))
         height += secrets.choice((-1, 1))
 
         text_positions.append(tuple(secrets.randbelow(10) + 15 + i for i in cords))
 
+    d = noise.add_noise_lines(ImageDraw.Draw(img))
+
     # Add a noise line relative to the text position
-    value = secrets.randbelow(len(text_positions)+2)
+    value = secrets.randbelow(len(text_positions))
     for i in range(len(text_positions) - value):
         d.line((text_positions[i], text_positions[i + value]), fill=white, width=0)
 
