@@ -56,7 +56,7 @@ def cap_gen(text: str) -> Image.Image:
         cords = space, height
 
         angle = secrets.choice(range(-20, 20))
-        img = noise.TextAngled(
+        img = noise.text_angled(
             img, cords, letter, fill=white, font=corresponding_font[letter], angle=angle
         )
 
@@ -70,6 +70,6 @@ def cap_gen(text: str) -> Image.Image:
     # Add a noise line relative to the text position
     value = secrets.randbelow(len(text_positions))
     for i in range(len(text_positions) - value):
-        d.line((text_positions[i], text_positions[i + value]), fill=white, width=0)
+        d.line((text_positions[i], text_positions[i + value]), fill=white, width=0)  # type: ignore
 
     return noise.salt_and_pepper(img, probability=0.2)
