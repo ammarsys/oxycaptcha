@@ -2,10 +2,7 @@
 from typing import Literal, Sequence
 
 import sys
-import random
 import secrets
-
-import numpy as np
 
 from PIL import Image, ImageDraw, ImageFont
 

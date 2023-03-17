@@ -9,17 +9,14 @@ License: MIT
 
 import secrets
 import datetime
-import random
 import base64
-import os
-from typing import Callable
 from io import BytesIO
 from urllib.parse import urljoin
 
 from flask import Flask, send_file, render_template, jsonify, redirect, request
 from flask_cors import CORS
 
-from utils import noise, cap_gen, TTLCache
+from utils import cap_gen, TTLCache
 
 app = Flask(__name__)
 app.captcha_count = 0
