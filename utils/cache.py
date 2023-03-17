@@ -30,6 +30,7 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
     Ordinary format for the cache instance variable is the submodule initialized class id and the initialized class.
 
     """
+
     def __init__(self, ttl: int = 30):
         self.ttl = ttl
         self.cache: dict[KT, tuple[VT, datetime.datetime]] = {}

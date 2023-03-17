@@ -38,7 +38,9 @@ def salt_and_pepper(image: Image.Image, probability: float) -> Image.Image:
 
     for x in range(image.width):
         for y in range(image.height):
-            random_number = secrets.choice((0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
+            random_number = secrets.choice(
+                (0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+            )
 
             if random_number < probability:
                 draw.point((x, y), fill=(255, 255, 255))
