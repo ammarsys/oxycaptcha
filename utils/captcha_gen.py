@@ -8,17 +8,17 @@ from utils import noise
 
 
 FONTS_LOWER = [
-    ImageFont.truetype(os.path.join("fonts", "lower", "gadugib.ttf"), 32),
-    ImageFont.truetype(os.path.join("fonts", "lower", "Chalkduster_400.ttf"), 32),
-    ImageFont.truetype(os.path.join("fonts", "lower", "ShadowsIntoLight-Regular.ttf"), 32),
-    ImageFont.truetype(os.path.join("fonts", "lower", "Rajdhani-SemiBold.ttf"), 32),
+    ImageFont.truetype(os.path.join("fonts", "lower", "gadugib.ttf"), 34),
+    ImageFont.truetype(os.path.join("fonts", "lower", "Chalkduster_400.ttf"), 34),
+    ImageFont.truetype(os.path.join("fonts", "lower", "ShadowsIntoLight-Regular.ttf"), 34),
+    ImageFont.truetype(os.path.join("fonts", "lower", "Rajdhani-SemiBold.ttf"), 34),
 ]
 
 FONTS_UPPER = [
-    ImageFont.truetype(os.path.join("fonts", "upper", "arial.ttf"), 55),
-    ImageFont.truetype(os.path.join("fonts", "upper", "FallingSky-JKwK.ttf"), 55),
-    ImageFont.truetype(os.path.join("fonts", "upper", "TrainOne-Regular.ttf"), 55),
-    ImageFont.truetype(os.path.join("fonts", "upper", "BebasNeue-Regular.ttf"), 55),
+    ImageFont.truetype(os.path.join("fonts", "upper", "arial.ttf"), 57),
+    ImageFont.truetype(os.path.join("fonts", "upper", "FallingSky-JKwK.ttf"), 57),
+    ImageFont.truetype(os.path.join("fonts", "upper", "TrainOne-Regular.ttf"), 57),
+    ImageFont.truetype(os.path.join("fonts", "upper", "BebasNeue-Regular.ttf"), 57),
 ]
 
 
@@ -65,4 +65,4 @@ def cap_gen(text: str) -> Image.Image:
     for i in range(len(text_positions) - value):
         d.line((text_positions[i], text_positions[i + value]), fill=white, width=0)
 
-    return noise.salt_and_pepper(img, prob=0.1)
+    return noise.salt_and_pepper(img, probability=0.2)

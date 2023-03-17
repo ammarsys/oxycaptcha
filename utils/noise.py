@@ -2,42 +2,51 @@
 
 import numpy as np
 import secrets
+import random
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 
 def add_noise_lines(image: Image.Image) -> Image.Image:
     """Add noise lines to an image."""
-    size = (305, 95)
+    size = image.im.size
 
-    for _ in range(1):
-        width = secrets.choice((1, 2))
-        start = (0, secrets.choice(range(0, size[1] - 1)))
-        end = (size[0], secrets.choice(range(0, size[1] - 1)))
-        image.line([start, end], fill="white", width=width)
+    for _ in range(secrets.randbelow(3)):
+        x = (-50, -50)
+        y = (size[0] + 10, secrets.choice(range(0, size[1] + 10)))
 
-    for _ in range(1):
-        start = (-50, -50)
-        end = (size[0] + 10, secrets.choice(range(0, size[1] + 10)))
-        image.arc(start + end, 0, 360, fill="white")
+        image.arc(x + y, 0, 360, fill="white")
 
     return image
 
 
-def salt_and_pepper(image: Image.Image, prob: float) -> Image.Image:
-    """Add the "salt and pepper" effect to an image."""
-    arr = np.asarray(image)  # type: ignore
-    original_dtype = arr.dtype
-    intensity_levels = 2 ** (arr[0, 0].nbytes * 8)
-    min_intensity = 0
-    max_intensity = intensity_levels - 1
-    random_image_arr = np.random.choice(
-        [min_intensity, 1, np.nan], p=[prob / 2, 1 - prob, prob / 2], size=arr.shape
-    )
-    salt_and_peppered_arr = arr.astype(np.float_) * random_image_arr
-    salt_and_peppered_arr = np.nan_to_num(
-        salt_and_peppered_arr, nan=max_intensity
-    ).astype(original_dtype)
+def salt_and_pepper(image: Image.Image, probability: float) -> Image.Image:
+    """
+    Adds white pixels to a PIL image with a specified probability.
 
-    return Image.fromarray(salt_and_peppered_arr)
+    Args:
+        image (PIL.Image): The input image.
+        probability (float): The probability of adding a white pixel at each pixel location.
+
+    Returns:
+        PIL.Image: The output image with white pixels added.
+
+    """
+    output_image = Image.new(image.mode, image.size)
+
+    draw = ImageDraw.Draw(output_image)
+
+    for x in range(image.width):
+        for y in range(image.height):
+            random_number = secrets.choice((0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
+
+            if random_number < probability:
+                draw.point((x, y), fill=(255, 255, 255))
+
+            else:
+                pixel = image.getpixel((x, y))
+                draw.point((x, y), fill=pixel)
+
+    return output_image
+
 
