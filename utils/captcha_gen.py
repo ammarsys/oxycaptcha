@@ -1,3 +1,5 @@
+"""Captcha generation for the API (this is where the magic happens!)"""
+
 import random
 import secrets
 import os

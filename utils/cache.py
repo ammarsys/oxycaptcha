@@ -1,3 +1,5 @@
+"""TTL Cache implementation for the Flask API"""
+
 import datetime
 from typing import (
     Generic,

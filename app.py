@@ -1,11 +1,4 @@
-"""
-A lightweight Captcha API made with Flask. This version is a new, fast and completely rewritten API,
-originally by Vixen, which was discontinued.
-
-The website is located at https://captchaAPI.pythonanywhere.com/
-
-License: MIT
-"""
+"""A lightweight Captcha API"""
 
 import secrets
 import datetime
