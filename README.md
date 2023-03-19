@@ -5,7 +5,7 @@
 
 <div align="center">
 
-# Captcha API
+# oxycaptcha
 
 <i>Fast, secure, adaptable Captcha API made in Flask.</i>
 
@@ -28,7 +28,8 @@ to making simple HTTP requests,
 ```python
 import requests
 
-response = requests.get('https://captchaAPI.pythonanywhere.com/api/img').json()
+# This is boilerplate code! It does not work currently as we haven't released v2.0 yet.
+response = requests.get('https://oxycaptcha.pythonanywhere.com/api/img').json()
 
 print(response["solution"], response["url"])
 ```
