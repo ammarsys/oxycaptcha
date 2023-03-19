@@ -1,10 +1,10 @@
-### This repository is currently being remade & the API is not being hosted yet.
-
 <div align="center">
+
+### This repository is currently being remade & the API is not being hosted yet.
 
 # oxycaptcha
 
-<i>Fast, secure, adaptable Captcha API made in Flask.</i>
+<i>Fast, secure, adaptable captcha API made in Flask.</i>
 
 ![image](https://cdn.discordapp.com/attachments/1085992233536335982/1086430183604629564/image.png)
 
@@ -33,6 +33,6 @@ print(response["solution"], response["url"])
 
 ## Contributing
 
-Contributions are always welcome! In the [CONTRIBUTING.md](https://github.com/ammarsys/captchaAPI/blob/main/CONTRIBUTING.md), you will find instructions & current TODO list.
+Contributions are always welcome! In the [CONTRIBUTING.md](https://github.com/ammarsys/oxycaptcha/blob/main/CONTRIBUTING.md), you will find instructions & current TODO list.
 
 
