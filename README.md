@@ -1,24 +1,29 @@
-# This repository is currently being remade
+<hr>
 
-The new version comes with a lot of new captcha features and a prettier front end. Chip in by leaving a ⭐ & wait for the v2 version.
+## This repository is currently being remade & the API is not being hosted yet.
+<hr>
+
+<div align="center">
 
 # Captcha API
 
-A lightweight Captcha API made with Flask. This version is a new, fast and completely rewritten API, originally by Vixen, which was discontinued.
+<i>Fast, secure, adaptable Captcha API made in Flask.</i>
+
+![image](https://cdn.discordapp.com/attachments/1085992233536335982/1086430183604629564/image.png)
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</div>
 
-The API is live at [PythonAnywhere](https://pythonanywhere.com/) (specifically, [here](https://captchaAPI.pythonanywhere.com/)). 
-# Usage
+This is a free-to-use, integrate-yourself Captcha API built with Python. 
+It provides a Captcha, and it's solution, which makes it possible to be implemented anywhere with a bit of work (e.g. webapps, Discord Bots).
 
-### Wrappers
+You can find the projects' homepage (and the API documentations) [here](https://google.com/).
 
- - [JavaScript](https://www.npmjs.com/package/essentials-captcha)
- - [Repository & Creator](https://github.com/SpeckyYT/essentials-captcha#readme)
+## Usage
 
-### Manual Usage
-
-Simply make a HTTP get request to the API endpoint and treat it like a JSON.
+You can find examples on how to integrate the API [here](https://google.com/). However, the usage really boils down
+to making simple HTTP requests,
 
 ```python
 import requests
@@ -28,50 +33,8 @@ response = requests.get('https://captchaAPI.pythonanywhere.com/api/img').json()
 print(response["solution"], response["url"])
 ```
 
-or, if you'd like a async request
+## Contributing
 
-```python
-import aiohttp
-import asyncio
+Contributions are always welcome! In the [CONTRIBUTING.md](https://github.com/ammarsys/captchaAPI/blob/main/CONTRIBUTING.md), you will find instructions & current TODO list.
 
-async def main():
-    async with aiohttp.ClientSession() as session:
-        async with session.get('https://captchaAPI.pythonanywhere.com/api/img') as responseget:
-            return await responseget.json()
 
-loop = asyncio.get_event_loop()
-response = loop.run_until_complete(main())
-print(response["solution"], response["url"])
-```
-
-For more examples check out https://captchaAPI.pythonanywhere.com/examples !
-
-*For contributing please check out `CONTRIBUTING.md`*
-
-# Documentations
-
-- ## <span style="color:white">/api/img</span>
-`Method:` get
-
-`Return Type:` text / json
-
-`Description:` URL (CDN) of the captcha and it's solution.
-
-### **Parameters**
-
-- requests
-
-`Type:` number
-
-`Default Value | Max Value:` 10 | 20
-
-`Description:` The number of how many times the image can be accessed before it expires.
-
-<hr>
-
-- ## <span style="color:white">/api/cdn/&lt;key&gt;</span>
-`Method:` get
-
-`Return Type:` image
-
-`Description:` An image (the captcha).
