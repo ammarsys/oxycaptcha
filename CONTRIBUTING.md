@@ -1,31 +1,32 @@
-# Contributing to captchaAPI
+# Contributing to oxycaptcha
 
 First, thanks for taking the time to contribute! ❤️ All contributions are welcomed and encouraged.
 
-## Contributing
+## TODO
 
-1. [Create issue and assign it to yourself](https://github.com/ammarsys/captchaAPI/issues)
-2. Fork the repository or make a new branch
-3. Make your changes.
-4. [Create a PR](https://github.com/ammarsys/captchaAPI/issues/pulls)
-   with a good description on the changes you've made.
+Here are some of the things that we have planned. If you want to help with any of them, you can contact me on Discord for more 
+information on any of the bullet points `ammar.#7568`.
 
-## General Guidelines
+**Being worked on**
+- Fine-tuning captcha generation
+- Front end website
+- Z-Axis 3d simulation captcha (each letter) rotation
 
-- Follow `PEP8` rules
-- We use [Sphinx](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html) docstrings
-- Your code must be formatted using [black](https://pypi.org/project/black/) 
-- You should sort imports using [isort](https://pypi.org/project/isort/) 
-- You should run tests using [pytest](https://pypi.org/project/pytest/) before creating a pull request
-- Your code must be typehinted. Look into `pyright` or `pylance` type checkers if you do not have one
-- Write efficient and clean code
+**Not being worked on yet**
+- Better fonts
 
-## How to clone the repo locally and run it?
+### Contributing Guidelines
 
-1. `git clone https://github.com/ammarsys/captchaAPI/`
+- [Create an issue and assign it to yourself](https://github.com/ammarsys/oxycaptcha/issues)
+- [Create a PR](https://github.com/ammarsys/oxycaptcha/issues/pulls)
+   with a good description on the changes you've made
 
-2. `cd captchaapi`
-3. `py -m pip install -r requirements.txt`
-4. `py app.py`
+For help with making your first contribution to GitHub checkout [first-contributions](https://github.com/firstcontributions/first-contributions).
 
-Voilla!
+### General Guidelines
+
+- You must follow **[PEP8](https://peps.python.org/pep-0008/)** rules. Use a linter to check your code.
+- You must use **[Google style](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)** docstrings
+- Your code must be formatted using **[black](https://pypi.org/project/black/)**
+- You must sort imports using **[isort](https://pypi.org/project/isort/)**
+- Your code must be statically typehinted and compliant with **[mypy](https://www.mypy-lang.org/)**.
