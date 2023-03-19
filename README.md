@@ -22,7 +22,7 @@ You can find the projects' homepage (and the API documentations) [here](https://
 
 ## Usage
 
-You can find examples on how to integrate the API [here](https://google.com/). However, the usage really boils down
+Examples on how to integrate the API are [here](https://google.com/). However, the usage really boils down
 to making simple HTTP requests,
 
 ```python
