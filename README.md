@@ -1,7 +1,4 @@
-<hr>
-
-## This repository is currently being remade & the API is not being hosted yet.
-<hr>
+### This repository is currently being remade & the API is not being hosted yet.
 
 <div align="center">
 
