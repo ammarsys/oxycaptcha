@@ -4,7 +4,7 @@
 
 # oxycaptcha
 
-<i>Fast, secure, adaptable captcha API made in Flask.</i>
+<i>Fast, secure, adaptable captcha API made with Flask.</i>
 
 ![image](https://cdn.discordapp.com/attachments/1085992233536335982/1086430183604629564/image.png)
 
