@@ -10,19 +10,19 @@ from utils import noise
 
 
 FONTS_LOWER = [
-    ImageFont.truetype(os.path.join("fonts", "lower", "gadugib.ttf"), 34),
+    ImageFont.truetype(os.path.join("fonts", "lower", "gadugi-bold.ttf"), 30),
     ImageFont.truetype(os.path.join("fonts", "lower", "Chalkduster_400.ttf"), 34),
     ImageFont.truetype(
-        os.path.join("fonts", "lower", "ShadowsIntoLight-Regular.ttf"), 34
+        os.path.join("fonts", "lower", "SpaceMono-Bold.ttf"), 34
     ),
-    ImageFont.truetype(os.path.join("fonts", "lower", "Rajdhani-SemiBold.ttf"), 34),
+    ImageFont.truetype(os.path.join("fonts", "lower", "RobotoSlab-Black.ttf"), 34),
 ]
 
 FONTS_UPPER = [
-    ImageFont.truetype(os.path.join("fonts", "upper", "arial.ttf"), 57),
-    ImageFont.truetype(os.path.join("fonts", "upper", "FallingSky-JKwK.ttf"), 57),
-    ImageFont.truetype(os.path.join("fonts", "upper", "TrainOne-Regular.ttf"), 57),
-    ImageFont.truetype(os.path.join("fonts", "upper", "BebasNeue-Regular.ttf"), 57),
+    ImageFont.truetype(os.path.join("fonts", "upper", "arial.ttf"), 60),
+    ImageFont.truetype(os.path.join("fonts", "upper", "FallingSky-JKwK.ttf"), 60),
+    ImageFont.truetype(os.path.join("fonts", "upper", "TrainOne-Regular.ttf"), 60),
+    ImageFont.truetype(os.path.join("fonts", "upper", "BebasNeue-Regular.ttf"), 60),
 ]
 
 
@@ -57,7 +57,7 @@ def cap_gen(text: str) -> Image.Image:
     for count, letter in enumerate(text):
         cords = space, height
 
-        angle = secrets.choice(range(-20, 20))
+        angle = secrets.choice(range(-10, 10))
         img = noise.text_angled(
             img, cords, letter, fill=white, font=corresponding_font[letter], angle=angle
         )
