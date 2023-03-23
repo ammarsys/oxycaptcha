@@ -1,6 +1,8 @@
 """Noise functions for the captchas."""
 
 import secrets
+import numpy
+import math
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -50,6 +52,17 @@ def salt_and_pepper(image: Image.Image, probability: float) -> Image.Image:
     return output_image
 
 
+def find_coeffs(angle):
+    if secrets.choice((0, 1)):
+        angle = math.radians(angle)
+    else:
+        angle = -math.radians(angle)
+
+    coeffs = [1, 0, 0, math.tan(angle), 1, 0, 0, 0, 1]
+
+    return coeffs
+
+
 def text_angled(
     img,
     xy: tuple[int, int],
@@ -78,14 +91,26 @@ def text_angled(
 
     # Create new image for the font
     rotated_text_img = Image.new(
-        mode="RGBA", size=(text_width, text_height), color=(0, 0, 0, 0)
+        mode="RGBA", size=(text_width + 100, text_height + 100), color=(0, 0, 0, 0)
     )
     rotated_text_draw = ImageDraw.Draw(rotated_text_img)
 
     rotated_text_draw.text((0, 0), text, fill=fill, font=font, **kwargs)
 
-    # Rotate the text image by 'angle'
+    angle_coef = secrets.choice(range(10, 30))
+    coeffs = find_coeffs(angle_coef)
+
+    rotated_text_img = rotated_text_img.transform(
+        (
+            int(rotated_text_img.width + abs(coeffs[1] * rotated_text_img.height)),
+            rotated_text_img.height,
+        ),
+        Image.AFFINE,
+        coeffs,
+        Image.BICUBIC,
+    )
     rotated_text_img = rotated_text_img.rotate(angle, expand=True)
+
     img.paste(rotated_text_img, xy, rotated_text_img)
 
     return img
