@@ -1,7 +1,6 @@
 """Noise functions for the captchas."""
 
 import secrets
-import numpy
 import math
 
 from PIL import Image, ImageDraw, ImageFont
