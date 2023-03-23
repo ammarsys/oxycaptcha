@@ -39,7 +39,7 @@ def cap_gen(text: str) -> Image.Image:
     """
     # Start with a random height and spacing
     white = 255, 255, 255
-    space, height = random.randint(20, 25), random.randint(9, 17)
+    space, height = random.randint(20, 25), random.randint(5, 13)
 
     # Assign every letter a corresponding random font
     corresponding_font = {
@@ -57,9 +57,10 @@ def cap_gen(text: str) -> Image.Image:
     for count, letter in enumerate(text):
         cords = space, height
 
-        angle = secrets.choice(range(-10, 10))
+        rot_angle = secrets.choice(range(-10, 10))
+        tilt_angle = secrets.choice(range(10, 30))
         img = noise.text_angled(
-            img, cords, letter, fill=white, font=corresponding_font[letter], angle=angle
+            img, cords, letter, fill=white, font=corresponding_font[letter], rot_angle=rot_angle, tilt_angle=tilt_angle
         )
 
         space += relative_spacing + secrets.choice(range(7, 13))

@@ -68,24 +68,27 @@ def text_angled(
     text: str,
     fill: tuple[int, int, int] | str,
     font: ImageFont.FreeTypeFont,
-    angle: int,
+    rot_angle: int,
+    tilt_angle: int,
     **kwargs
 ):
     """Wrapper around ImageDraw but you can specify an angle for the text
 
     Args:
         img (PIL.Image.Image): The 'Image' to draw the text on
-        angle (int, optional): The angle for how much to rotate the text. Defaults to 0.
+        rot_angle (int, optional): The angle for how much to rotate the text. Defaults to 0.
         font (ImageFont.FreeTypeFont): font for the text
         fill (tuple[int, int, int] | str): colour for the text
         text (str): the text itself
         xy (tuple[int, int]: coordinates for the text
+        tilt_angle (int): horizontal tilt for the text
 
     Returns:
         PIL.Image.Image: new 'Image' with the text on it
 
     """
     draw = ImageDraw.Draw(img)
+
     text_width, text_height = draw.multiline_textsize(text, font=font)
 
     # Create new image for the font
@@ -93,12 +96,9 @@ def text_angled(
         mode="RGBA", size=(text_width + 100, text_height + 100), color=(0, 0, 0, 0)
     )
     rotated_text_draw = ImageDraw.Draw(rotated_text_img)
-
     rotated_text_draw.text((0, 0), text, fill=fill, font=font, **kwargs)
 
-    angle_coef = secrets.choice(range(10, 30))
-    coeffs = find_coeffs(angle_coef)
-
+    coeffs = find_coeffs(tilt_angle)
     rotated_text_img = rotated_text_img.transform(
         (
             int(rotated_text_img.width + abs(coeffs[1] * rotated_text_img.height)),
@@ -108,7 +108,7 @@ def text_angled(
         coeffs,
         Image.BICUBIC,
     )
-    rotated_text_img = rotated_text_img.rotate(angle, expand=True)
+    rotated_text_img = rotated_text_img.rotate(rot_angle, expand=True)
 
     img.paste(rotated_text_img, xy, rotated_text_img)
 
