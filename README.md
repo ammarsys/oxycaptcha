@@ -26,9 +26,8 @@ to making simple HTTP requests,
 import requests
 
 # This is boilerplate code! It does not work currently as we haven't released v5.0.0 yet.
-response = requests.get('https://oxycaptcha.pythonanywhere.com/api/img').json()
-
-print(response["solution"], response["url"])
+response = requests.get('https://oxycaptcha.pythonanywhere.com/api/v5/captcha').json()
+print(response)
 ```
 
 ## Contributing
