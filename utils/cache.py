@@ -69,3 +69,6 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
 
     def __str__(self) -> str:
         return str(self.cache)
+
+    def get(self, item: KT) -> VT:
+        return self.cache.get(item)[0]

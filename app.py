@@ -15,7 +15,8 @@ app = Flask(__name__)
 app.captcha_count = 0  # type: ignore
 
 CORS(app)
-captchas: TTLCache[str, list] = TTLCache(ttl=30)
+captcha_cdn: TTLCache[str, list] = TTLCache(ttl=30)
+captchas_solution: TTLCache[str, str] = TTLCache(ttl=30)
 
 
 def id_generator(y: int) -> str:
@@ -47,16 +48,16 @@ def get_img(key: str):
 
     """
     try:
-        if captchas[key][3] >= captchas[key][4]:
-            del captchas[key]
+        if captcha_cdn[key][3] >= captcha_cdn[key][4]:
+            del captcha_cdn[key]
 
-        captchas[key][3] += 1
+        captcha_cdn[key][3] += 1
 
-        if not captchas[key][1]:
-            pil_image = cap_gen(text=captchas[key][0])
-            captchas[key][1] = pil_image
+        if not captcha_cdn[key][1]:
+            pil_image = cap_gen(text=captcha_cdn[key][0])
+            captcha_cdn[key][1] = pil_image
         else:
-            pil_image = captchas[key][1]
+            pil_image = captcha_cdn[key][1]
 
         output = BytesIO()
         pil_image.convert("RGBA").save(output, format="PNG")
@@ -85,22 +86,51 @@ def api_captcha():
 
     delta = datetime.timedelta(minutes=5)
     now = datetime.datetime.utcnow()
+    time_now = now.strftime("%S")[-5:]
 
-    solution = id_generator(y=secrets.choice((4, 5)))
-
-    id_ = base64.b64encode(
+    solution_id = base64.b64encode(
         bytes(
-            f'{app.captcha_count}.{id_generator(y=10)}.{now.strftime("%S")[-5:]}',
+            f'{app.captcha_count}.{id_generator(y=10)}.{time_now}',
             "utf-8",
         )
     ).decode()
+    solution = id_generator(y=secrets.choice((4, 5)))
+    captchas_solution[solution_id] = solution
 
-    captchas[id_] = [solution, None, now + delta, 0, access]
+    cdn_id = base64.b64encode(
+        bytes(
+            f'{app.captcha_count}.{id_generator(y=10)}.{time_now}',
+            "utf-8",
+        )
+    ).decode()
+    captcha_cdn[cdn_id] = [solution, None, now + delta, 0, access]
+
     app.captcha_count += 1
 
     return jsonify(
-        {"solution": solution, "url": urljoin(request.host_url, f"/api/v2/cdn/{id_}")}
+        {
+            "cdn_url": urljoin(request.host_url, f"/api/v2/cdn/{cdn_id}"),
+            "solution_check_url": urljoin(request.host_url, f"/api/v2/check/{solution_id}"),
+            "solution_id": solution_id,
+            "cdn_id": cdn_id
+        }
     )
+
+
+@app.route("/api/v2/check/<solution_id>", methods=["POST"])
+def check_solution(solution_id: str):
+    data = {"correct": False, "case_insensitive_correct": False, "data_analysis": {}}
+
+    attempt = request.args.get("solution")
+    solution = captchas_solution.get(solution_id)
+
+    if attempt == solution:  # type: ignore
+        data["correct"] = True
+
+    if attempt.lower() == solution.lower():  # type: ignore
+        data["case_insensitive_correct"] = True
+
+    return jsonify(data)
 
 
 @app.route("/examples")
