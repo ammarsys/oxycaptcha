@@ -35,7 +35,7 @@ def id_generator(y: int) -> str:
     return "".join(secrets.choice(string) for _ in range(y))
 
 
-@app.route("/api/v2/cdn/<key>")
+@app.route("/api/v2/cdn/<key>", methods=["GET"])
 def get_img(key: str):
     """
     A Content Delivery Network (CDN) for serving captcha images.
@@ -69,7 +69,7 @@ def get_img(key: str):
         return redirect("/")
 
 
-@app.route("/api/v2/captcha")
+@app.route("/api/v2/captcha", methods=["GET"])
 def api_captcha():
     """
     Endpoint for creating a dictionary key with the captcha ID and its related information. This route has an argument
@@ -133,13 +133,13 @@ def check_solution(solution_id: str):
     return jsonify(data)
 
 
-@app.route("/examples")
+@app.route("/examples", methods=["GET"])
 def examples():
     """API examples endpoint"""
     return render_template("examples.html")
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def home():
     """API home"""
     return render_template("index.html")
