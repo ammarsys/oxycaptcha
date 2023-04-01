@@ -2,3 +2,4 @@ Flask
 Flask_Cors
 Pillow
 secrets
+user_agent
