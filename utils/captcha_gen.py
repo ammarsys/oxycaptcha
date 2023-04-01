@@ -57,7 +57,13 @@ def cap_gen(text: str) -> Image.Image:
         rot_angle = secrets.choice(range(-10, 10))
         tilt_angle = secrets.choice(range(10, 30))
         img = noise.text_angled(
-            img, cords, letter, fill=white, font=corresponding_font[letter], rot_angle=rot_angle, tilt_angle=tilt_angle
+            img,
+            cords,
+            letter,
+            fill=white,
+            font=corresponding_font[letter],
+            rot_angle=rot_angle,
+            tilt_angle=tilt_angle,
         )
 
         space += relative_spacing + secrets.choice(range(7, 13))

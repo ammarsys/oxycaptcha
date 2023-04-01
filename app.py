@@ -10,6 +10,7 @@ from flask import Flask, send_file, render_template, jsonify, redirect, request
 from flask_cors import CORS
 
 from utils import cap_gen, TTLCache
+from utils import get_latest_vpn_list, classify_ipv4_for_vpn, classify_user_agent
 
 app = Flask(__name__)
 app.captcha_count = 0  # type: ignore
@@ -90,7 +91,7 @@ def api_captcha():
 
     solution_id = base64.b64encode(
         bytes(
-            f'{app.captcha_count}.{id_generator(y=10)}.{time_now}',
+            f"{app.captcha_count}.{id_generator(y=10)}.{time_now}",
             "utf-8",
         )
     ).decode()
@@ -99,7 +100,7 @@ def api_captcha():
 
     cdn_id = base64.b64encode(
         bytes(
-            f'{app.captcha_count}.{id_generator(y=10)}.{time_now}',
+            f"{app.captcha_count}.{id_generator(y=10)}.{time_now}",
             "utf-8",
         )
     ).decode()
@@ -110,18 +111,20 @@ def api_captcha():
     return jsonify(
         {
             "cdn_url": urljoin(request.host_url, f"/api/v2/cdn/{cdn_id}"),
-            "solution_check_url": urljoin(request.host_url, f"/api/v2/check/{solution_id}"),
+            "solution_check_url": urljoin(
+                request.host_url, f"/api/v2/check/{solution_id}"
+            ),
             "solution_id": solution_id,
-            "cdn_id": cdn_id
+            "cdn_id": cdn_id,
         }
     )
 
 
 @app.route("/api/v5/check/<solution_id>", methods=["POST"])
 def check_solution(solution_id: str):
-    data = {"correct": False, "case_insensitive_correct": False, "data_analysis": {}}
+    data = {"correct": False, "case_insensitive_correct": False, "data_analysis": {"ua": "fake"}}
 
-    attempt = request.args.get("solution")
+    attempt = request.args.get("solution", type=str, default="x")
     solution = captchas_solution.get(solution_id)
 
     if attempt == solution:  # type: ignore
@@ -129,6 +132,9 @@ def check_solution(solution_id: str):
 
     if attempt.lower() == solution.lower():  # type: ignore
         data["case_insensitive_correct"] = True
+
+    # TODO: implement
+    # data["data_analysis"]["ua"] = classify_user_agent()
 
     return jsonify(data)
 
@@ -152,4 +158,7 @@ def not_found(_):
 
 
 if __name__ == "__main__":
+    app.last_vpn_download_time = datetime.datetime.now()  # type: ignore
+    app.list_vpns = get_latest_vpn_list()  # type: ignore
+
     app.run()
