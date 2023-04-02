@@ -66,11 +66,10 @@ class App:
 
         self.latest_captcha_data = {}
 
-
     def GButton_967_command(self):
         response = requests.get("http://127.0.0.1:5000/api/v5/captcha")
         captcha_data = response.json()
-        captcha_url = captcha_data['cdn_url']
+        captcha_url = captcha_data["cdn_url"]
 
         captcha_image = Image.open(requests.get(captcha_url, stream=True).raw)
         captcha_photo = ImageTk.PhotoImage(captcha_image)
@@ -79,14 +78,14 @@ class App:
 
         captcha_label.photo = captcha_photo
 
-
         self.latest_captcha_data = captcha_data
-
 
     def GButton_566_command(self):
         data = self.GLineEdit_150.get()
 
-        ret = requests.post(f"http://127.0.0.1:5000/api/v5/check/{self.latest_captcha_data['solution_id']}?solution={data}")
+        ret = requests.post(
+            f"http://127.0.0.1:5000/api/v5/check/{self.latest_captcha_data['solution_id']}?solution={data}"
+        )
 
         messagebox.showinfo("Popup Title", ret.json())
 
