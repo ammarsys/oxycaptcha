@@ -1,27 +1,13 @@
-"""A lightweight Captcha API"""
-
 import secrets
 import datetime
 import base64
 from io import BytesIO
 from urllib.parse import urljoin
 
-from flask import Flask, send_file, render_template, jsonify, redirect, request
-from flask_cors import CORS
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from flask import send_file, render_template, jsonify, redirect, request
 
-from utils import cap_gen, TTLCache
-
-app = Flask(__name__)
-app.captcha_count = 0  # type: ignore
-
-CORS(app)
-captcha_cdn: TTLCache[str, list] = TTLCache(ttl=30)
-captchas_solution: TTLCache[str, str] = TTLCache(ttl=30)
-
-limiter = Limiter(key_func=get_remote_address)
-limiter.init_app(app)
+from .utils import cap_gen
+from app import limiter, captchas_solution, captcha_cdn, flask_app
 
 
 def id_generator(y: int) -> str:
@@ -40,7 +26,7 @@ def id_generator(y: int) -> str:
     return "".join(secrets.choice(string) for _ in range(y))
 
 
-@app.route("/api/v5/cdn/<key>", methods=["GET"])
+@flask_app.route("/api/v5/cdn/<key>", methods=["GET"])
 @limiter.limit("30/minute")
 def get_img(key: str):
     """
@@ -75,7 +61,7 @@ def get_img(key: str):
         return redirect("/")
 
 
-@app.route("/api/v5/captcha", methods=["GET"])
+@flask_app.route("/api/v5/captcha", methods=["GET"])
 @limiter.limit("30/minute")
 def api_captcha():
     """
@@ -97,7 +83,7 @@ def api_captcha():
 
     solution_id = base64.b64encode(
         bytes(
-            f"{app.captcha_count}.{id_generator(y=10)}.{time_now}",
+            f"{flask_app.captcha_count}.{id_generator(y=10)}.{time_now}",
             "utf-8",
         )
     ).decode()
@@ -106,13 +92,13 @@ def api_captcha():
 
     cdn_id = base64.b64encode(
         bytes(
-            f"{app.captcha_count}.{id_generator(y=10)}.{time_now}",
+            f"{flask_app.captcha_count}.{id_generator(y=10)}.{time_now}",
             "utf-8",
         )
     ).decode()
     captcha_cdn[cdn_id] = [solution, None, now + delta, 0, access]
 
-    app.captcha_count += 1
+    flask_app.captcha_count += 1
 
     return jsonify(
         {
@@ -126,7 +112,7 @@ def api_captcha():
     )
 
 
-@app.route("/api/v5/check/<solution_id>", methods=["POST"])
+@flask_app.route("/api/v5/check/<solution_id>", methods=["POST"])
 @limiter.limit("10/minute")
 def check_solution(solution_id: str):
     data = {"correct": False, "case_insensitive_correct": False}
@@ -143,23 +129,19 @@ def check_solution(solution_id: str):
     return jsonify(data)
 
 
-@app.route("/examples", methods=["GET"])
+@flask_app.route("/examples", methods=["GET"])
 def examples():
     """API examples endpoint"""
     return render_template("examples.html")
 
 
-@app.route("/", methods=["GET"])
+@flask_app.route("/", methods=["GET"])
 def home():
     """API home"""
     return render_template("index.html")
 
 
-@app.errorhandler(404)
+@flask_app.errorhandler(404)
 def not_found(_):
     """404 error handling"""
     return redirect("/")
-
-
-if __name__ == "__main__":
-    app.run()
