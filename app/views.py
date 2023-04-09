@@ -1,3 +1,5 @@
+"""Routes for the API"""
+
 import secrets
 import datetime
 import base64
@@ -26,6 +28,23 @@ def id_generator(y: int) -> str:
     return "".join(secrets.choice(string) for _ in range(y))
 
 
+def b64_encrypt_id():
+    """
+    Encrypt given ID into base64.
+
+    Decrypting this returns the captcha amount to date and the milisecond it was created
+    """
+    now = datetime.datetime.utcnow()
+    time_now = now.strftime("%S")[-5:]
+
+    return base64.b64encode(
+        bytes(
+            f"{flask_app.captcha_count}.{id_generator(y=10)}.{time_now}",
+            "utf-8",
+        )
+    ).decode()
+
+
 @flask_app.route("/api/v5/cdn/<key>", methods=["GET"])
 @limiter.limit("30/minute")
 def get_img(key: str):
@@ -40,16 +59,16 @@ def get_img(key: str):
 
     """
     try:
-        if captcha_cdn[key][3] >= captcha_cdn[key][4]:
+        if captcha_cdn[key]["accessed"] >= captcha_cdn[key]["max_access"]:
             del captcha_cdn[key]
 
-        captcha_cdn[key][3] += 1
+        captcha_cdn[key]["accessed"] += 1
 
-        if not captcha_cdn[key][1]:
-            pil_image = cap_gen(text=captcha_cdn[key][0])
-            captcha_cdn[key][1] = pil_image
+        if not captcha_cdn[key]["image"]:
+            pil_image = cap_gen(text=captcha_cdn[key]["solution"])
+            captcha_cdn[key]["image"] = pil_image
         else:
-            pil_image = captcha_cdn[key][1]
+            pil_image = captcha_cdn[key]["image"]
 
         output = BytesIO()
         pil_image.convert("RGBA").save(output, format="PNG")
@@ -68,35 +87,36 @@ def api_captcha():
     Endpoint for creating a dictionary key with the captcha ID and its related information. This route has an argument
     which indicates times the captcha image can be accessed before it is wiped from the dictionary.
 
+    Two different types of cached dictionaries are stored,
+        - captcha_cdn
+        - captcha_solution
+
+    Both have similar data but different access points (keys). This is so that the user cannot bruteforce the API
+    directly. captcha_cdn key is shown (in CDN url) while captcha_solution is hidden.
+
     Returns:
         dict: A JSON dictionary containing the captcha ID and its related information.
 
     """
-    access = request.args.get("requests", default=10, type=int)
+    access = request.args.get("requests", default=5, type=int)
 
     if access > 20:
         return redirect("/")
 
-    delta = datetime.timedelta(minutes=5)
-    now = datetime.datetime.utcnow()
-    time_now = now.strftime("%S")[-5:]
-
-    solution_id = base64.b64encode(
-        bytes(
-            f"{flask_app.captcha_count}.{id_generator(y=10)}.{time_now}",
-            "utf-8",
-        )
-    ).decode()
+    solution_id = b64_encrypt_id()
     solution = id_generator(y=secrets.choice((4, 5)))
     captchas_solution[solution_id] = solution
 
-    cdn_id = base64.b64encode(
-        bytes(
-            f"{flask_app.captcha_count}.{id_generator(y=10)}.{time_now}",
-            "utf-8",
-        )
-    ).decode()
-    captcha_cdn[cdn_id] = [solution, None, now + delta, 0, access]
+    delta = datetime.timedelta(minutes=5)
+    now = datetime.datetime.utcnow()
+    cdn_id = b64_encrypt_id()
+    captcha_cdn[cdn_id] = {
+        "solution": solution,
+        "image": None,
+        "time": now + delta,
+        "accessed": 0,
+        "max_access": access
+    }
 
     flask_app.captcha_count += 1
 
@@ -115,13 +135,13 @@ def api_captcha():
 @flask_app.route("/api/v5/check/<solution_id>", methods=["POST"])
 @limiter.limit("10/minute")
 def check_solution(solution_id: str):
-    data = {"correct": False, "case_insensitive_correct": False}
+    data = {"case_sensitive_correct": False, "case_insensitive_correct": False}
 
     attempt = request.args.get("solution", type=str, default="x")
     solution = captchas_solution.get(solution_id)
 
     if attempt == solution:  # type: ignore
-        data["correct"] = True
+        data["case_sensitive_correct"] = True
 
     if attempt.lower() == solution.lower():  # type: ignore
         data["case_insensitive_correct"] = True

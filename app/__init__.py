@@ -5,11 +5,21 @@ from flask_cors import CORS
 
 from .utils import TTLCache
 
-flask_app = Flask(__name__)
-flask_app.captcha_count = 0
-CORS(flask_app)
 
-captcha_cdn: TTLCache[str, list] = TTLCache(ttl=30)
+class FlaskWithCount(Flask):
+    def __init__(self, import_name: str, captcha_count: int = 0, **kwargs) -> None:
+        """
+        Modified `flask.Flask` with a captcha_count argument to have a universal instance variable for counting them
+        """
+        super().__init__(import_name, **kwargs)
+        self.captcha_count = captcha_count
+
+        CORS(self)
+
+
+flask_app = FlaskWithCount(__name__)
+
+captcha_cdn: TTLCache[str, dict[str]] = TTLCache(ttl=30)
 captchas_solution: TTLCache[str, str] = TTLCache(ttl=30)
 
 limiter = Limiter(key_func=get_remote_address)
