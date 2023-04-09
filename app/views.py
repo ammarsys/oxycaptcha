@@ -12,7 +12,7 @@ from .utils import cap_gen
 from app import limiter, captchas_solution, captcha_cdn, flask_app
 
 
-def id_generator(y: int) -> str:
+def _id_generator(y: int) -> str:
     """
     Generates a captcha ID string of length 'y'.
 
@@ -28,7 +28,7 @@ def id_generator(y: int) -> str:
     return "".join(secrets.choice(string) for _ in range(y))
 
 
-def b64_encrypt_id():
+def _b64_encrypt_id():
     """
     Encrypt given ID into base64.
 
@@ -39,7 +39,7 @@ def b64_encrypt_id():
 
     return base64.b64encode(
         bytes(
-            f"{flask_app.captcha_count}.{id_generator(y=10)}.{time_now}",
+            f"{flask_app.captcha_count}.{_id_generator(y=10)}.{time_now}",
             "utf-8",
         )
     ).decode()
@@ -103,13 +103,13 @@ def api_captcha():
     if access > 20:
         return redirect("/")
 
-    solution_id = b64_encrypt_id()
-    solution = id_generator(y=secrets.choice((4, 5)))
+    solution_id = _b64_encrypt_id()
+    solution = _id_generator(y=secrets.choice((4, 5)))
     captchas_solution[solution_id] = solution
 
     delta = datetime.timedelta(minutes=5)
     now = datetime.datetime.utcnow()
-    cdn_id = b64_encrypt_id()
+    cdn_id = _b64_encrypt_id()
     captcha_cdn[cdn_id] = {
         "solution": solution,
         "image": None,
