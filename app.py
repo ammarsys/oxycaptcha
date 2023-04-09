@@ -8,6 +8,8 @@ from urllib.parse import urljoin
 
 from flask import Flask, send_file, render_template, jsonify, redirect, request
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 from utils import cap_gen, TTLCache
 
@@ -17,6 +19,9 @@ app.captcha_count = 0  # type: ignore
 CORS(app)
 captcha_cdn: TTLCache[str, list] = TTLCache(ttl=30)
 captchas_solution: TTLCache[str, str] = TTLCache(ttl=30)
+
+limiter = Limiter(key_func=get_remote_address)
+limiter.init_app(app)
 
 
 def id_generator(y: int) -> str:
@@ -36,6 +41,7 @@ def id_generator(y: int) -> str:
 
 
 @app.route("/api/v5/cdn/<key>", methods=["GET"])
+@limiter.limit("30/minute")
 def get_img(key: str):
     """
     A Content Delivery Network (CDN) for serving captcha images.
@@ -70,6 +76,7 @@ def get_img(key: str):
 
 
 @app.route("/api/v5/captcha", methods=["GET"])
+@limiter.limit("30/minute")
 def api_captcha():
     """
     Endpoint for creating a dictionary key with the captcha ID and its related information. This route has an argument
@@ -120,6 +127,7 @@ def api_captcha():
 
 
 @app.route("/api/v5/check/<solution_id>", methods=["POST"])
+@limiter.limit("10/minute")
 def check_solution(solution_id: str):
     data = {"correct": False, "case_insensitive_correct": False}
 

@@ -6,12 +6,16 @@ from typing import (
     TypeVar,
     Hashable,
     Generator,
+    Optional,
+    overload,
+    Union
 )
 from collections.abc import MutableMapping
 
 
 KT = TypeVar("KT", bound=Hashable)
 VT = TypeVar("VT")
+T = TypeVar("T")
 
 
 def _check_if_expired(item: datetime.datetime) -> bool:
@@ -41,9 +45,12 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
         if item not in self:
             raise KeyError
 
+        self.__check_expiry()
         return self.cache[item][0]
 
     def __contains__(self, item) -> bool:
+        self.__check_expiry()
+
         try:
             _, dt = self.cache[item]
 
@@ -56,6 +63,8 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
         return False
 
     def __setitem__(self, key: KT, value: VT) -> None:
+        self.__check_expiry()
+
         self.cache[key] = (value, _time(self.ttl))
 
     def __len__(self) -> int:
@@ -70,5 +79,27 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
     def __str__(self) -> str:
         return str(self.cache)
 
-    def get(self, item: KT) -> VT:
-        return self.cache.get(item)[0]
+    @overload
+    def get(self, item: KT, /) -> Optional[VT]: ...
+
+    @overload
+    def get(self, item: KT, /, default: T) -> Union[VT, T]: ...
+
+    def get(self, item: KT, /, default: Optional[T] = None) -> Union[VT, T, None]:
+        self.__check_expiry()
+
+        return self.cache.get(item, (default,))[0]
+
+    def __check_expiry(self) -> None:
+        """This function removes expired records from the cache dictionary.
+
+        We can loop through the dictionary items in a reverse order and delete any expired key-value pairs.
+        The moment we find a non-expired key-value pair in said loop, we break out because it is guaranteed that any
+        object after it is not expired (since dictionaries are ordered since Python 3.7, this means that the newest
+        key ([0]) is the newest by time  and the oldest ([-1]) is the oldest)
+
+        This function is to be called in (almost) all dunder methods.
+        """
+
+        # TODO: implement
+        pass
