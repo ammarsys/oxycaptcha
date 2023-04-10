@@ -6,24 +6,24 @@ from flask_cors import CORS
 from .utils import TTLCache
 
 
-class FlaskWithCount(Flask):
+class FlaskAdapted(Flask):
     def __init__(self, import_name: str, captcha_count: int = 0, **kwargs) -> None:
         """
-        Modified `flask.Flask` with a captcha_count argument to have a universal instance variable for counting them
+        Modified `flask.Flask` to include captcha_count and TTL cache captcha storage implementations
         """
         super().__init__(import_name, **kwargs)
         self.captcha_count = captcha_count
 
+        self.captcha_cdn: TTLCache[str, dict] = TTLCache(ttl=30)
+        self.captchas_solution: TTLCache[str, str] = TTLCache(ttl=30)
+
         CORS(self)
 
 
-flask_app = FlaskWithCount(__name__)
-
-captcha_cdn: TTLCache[str, dict[str]] = TTLCache(ttl=30)
-captchas_solution: TTLCache[str, str] = TTLCache(ttl=30)
+flask_app = FlaskAdapted(__name__)
 
 limiter = Limiter(key_func=get_remote_address)
 limiter.init_app(flask_app)
 
 
-__all__ = ["flask_app", "captcha_cdn", "captchas_solution", "limiter"]
+__all__ = ["flask_app", "limiter"]

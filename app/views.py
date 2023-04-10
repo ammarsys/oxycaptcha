@@ -9,7 +9,7 @@ from urllib.parse import urljoin
 from flask import send_file, render_template, jsonify, redirect, request
 
 from .utils import cap_gen
-from app import limiter, captchas_solution, captcha_cdn, flask_app
+from app import limiter, flask_app
 
 
 def _id_generator(y: int) -> str:
@@ -59,16 +59,19 @@ def get_img(key: str):
 
     """
     try:
-        if captcha_cdn[key]["accessed"] >= captcha_cdn[key]["max_access"]:
-            del captcha_cdn[key]
+        if flask_app.captcha_cdn[key]["cdn_accessed_number"] >= flask_app.captcha_cdn[key]["max_cdn_access"]:
+            del flask_app.captchas_solution[flask_app.captcha_cdn[key]["solution_id"]]
+            del flask_app.captcha_cdn[key]
 
-        captcha_cdn[key]["accessed"] += 1
+            return jsonify({"code": 418, "type": "error", "text": "captcha CDN accessed too many times, now expired"})
 
-        if not captcha_cdn[key]["image"]:
-            pil_image = cap_gen(text=captcha_cdn[key]["solution"])
-            captcha_cdn[key]["image"] = pil_image
+        flask_app.captcha_cdn[key]["cdn_accessed_number"] += 1
+
+        if not flask_app.captcha_cdn[key]["image"]:
+            pil_image = cap_gen(text=flask_app.captcha_cdn[key]["solution"])
+            flask_app.captcha_cdn[key]["image"] = pil_image
         else:
-            pil_image = captcha_cdn[key]["image"]
+            pil_image = flask_app.captcha_cdn[key]["image"]
 
         output = BytesIO()
         pil_image.convert("RGBA").save(output, format="PNG")
@@ -77,10 +80,10 @@ def get_img(key: str):
         return send_file(output, mimetype="image/png", as_attachment=False)
 
     except KeyError:
-        return redirect("/")
+        return jsonify({"code": 400, "type": "error", "text": "cdn key not found"})
 
 
-@flask_app.route("/api/v5/captcha", methods=["GET"])
+@flask_app.route("/api/v5/captcha", methods=["POST"])
 @limiter.limit("30/minute")
 def api_captcha():
     """
@@ -98,26 +101,33 @@ def api_captcha():
         dict: A JSON dictionary containing the captcha ID and its related information.
 
     """
-    access = request.args.get("requests", default=5, type=int)
+    data = request.get_json()
+    cdn_access = data.get("maxCdnAccess", 5)
+    solution_check = data.get("maxSolutionCheck", 5)
 
-    if access > 20:
-        return redirect("/")
+    if cdn_access >= 20:
+        return jsonify({"type": "error", "code": 400, "text": "maxCdnAccess is over 20. default is 5 max is 20"}), 400
+
+    if solution_check >= 20:
+        return jsonify({"type": "error", "code": 400, "text": "maxSolutionCheck is over 20. default is 5 max is 20"}), 400
 
     solution_id = _b64_encrypt_id()
     solution = _id_generator(y=secrets.choice((4, 5)))
-    captchas_solution[solution_id] = solution
+    flask_app.captchas_solution[solution_id] = solution
 
     delta = datetime.timedelta(minutes=5)
     now = datetime.datetime.utcnow()
     cdn_id = _b64_encrypt_id()
-    captcha_cdn[cdn_id] = {
+    flask_app.captcha_cdn[cdn_id] = {
         "solution": solution,
         "image": None,
         "time": now + delta,
-        "accessed": 0,
-        "max_access": access
+        "cdn_accessed_number": 0,
+        "max_cdn_access": cdn_access,
+        "solution_checked": 0,
+        "max_solution_check": solution_check,
+        "solution_id": solution_id
     }
-
     flask_app.captcha_count += 1
 
     return jsonify(
@@ -138,7 +148,10 @@ def check_solution(solution_id: str):
     data = {"case_sensitive_correct": False, "case_insensitive_correct": False}
 
     attempt = request.args.get("solution", type=str, default="x")
-    solution = captchas_solution.get(solution_id)
+    solution = flask_app.captchas_solution.get(solution_id)
+
+    if not solution:
+        return {"type": "error", "code": 400, "text": "solution key not found"}
 
     if attempt == solution:  # type: ignore
         data["case_sensitive_correct"] = True
@@ -165,3 +178,9 @@ def home():
 def not_found(_):
     """404 error handling"""
     return redirect("/")
+
+
+@flask_app.errorhandler(429)
+def ratelimited(_):
+    """404 error handling"""
+    return jsonify({"type": "ratelimited", "code": 429, "text": "too fast"})
