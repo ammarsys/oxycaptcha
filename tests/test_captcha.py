@@ -21,7 +21,7 @@ def test_api_captcha_internal(client: Any):
     assert client.application.captchas_solution.get(
         client.application.captcha_cdn[data["cdn_id"]]["solution_id"], None
     )
-    
+
     # GC
     del client.application.captchas_solution[client.application.captcha_cdn[data["cdn_id"]]["solution_id"]]
     del client.application.captcha_cdn[data["cdn_id"]]
