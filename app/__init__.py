@@ -15,7 +15,7 @@ class FlaskAdapted(Flask):
         self.captcha_count = captcha_count
 
         self.captcha_cdn: TTLCache[str, dict] = TTLCache(ttl=30)
-        self.captchas_solution: TTLCache[str, str] = TTLCache(ttl=30)
+        self.captchas_solution: TTLCache[str, dict] = TTLCache(ttl=30)
 
         CORS(self)
 
