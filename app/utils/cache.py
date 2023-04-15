@@ -76,7 +76,7 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
         ...
 
     @overload
-    def get(self, item: KT, /, default: T) -> Union[VT, T]:  # type: ignore
+    def get(self, item: KT, /, default: T) -> Union[VT, T]:  # noqa
         ...
 
     def get(self, item: KT, /, default: Optional[T] = None) -> Union[VT, T, None]:
