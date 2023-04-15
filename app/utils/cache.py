@@ -76,7 +76,7 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
         ...
 
     @overload
-    def get(self, item: KT, /, default: T) -> Union[VT, T]:
+    def get(self, item: KT, /, default: T) -> Union[VT, T]:  # type: ignore
         ...
 
     def get(self, item: KT, /, default: Optional[T] = None) -> Union[VT, T, None]:
@@ -95,5 +95,6 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
         This function is to be called in (almost) all dunder methods.
         """
 
-        # TODO: implement
-        pass
+        for key, value in reversed(list(self.cache.items())):
+            if not _check_if_expired(value[1]):
+                break

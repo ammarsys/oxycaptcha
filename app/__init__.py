@@ -22,7 +22,7 @@ class FlaskAdapted(Flask):
 
 flask_app = FlaskAdapted(__name__)
 
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=get_remote_address, storage_uri="memory://")
 limiter.init_app(flask_app)
 
 
