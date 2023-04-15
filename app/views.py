@@ -59,15 +59,23 @@ def get_img(key: str):
 
     """
     try:
-        if flask_app.captcha_cdn[key]["cdn_accessed_number"] >= flask_app.captcha_cdn[key]["max_cdn_access"]:
+        if (
+            flask_app.captcha_cdn[key]["cdn_accessed_number"]
+            >= flask_app.captcha_cdn[key]["max_cdn_access"]
+        ):
             del flask_app.captchas_solution[flask_app.captcha_cdn[key]["solution_id"]]
             del flask_app.captcha_cdn[key]
 
-            return jsonify({
-                "code": 418,
-                "type": "error",
-                "text": "captcha CDN accessed too many times, now expired & deleted"}
-            ), 418
+            return (
+                jsonify(
+                    {
+                        "code": 418,
+                        "type": "error",
+                        "text": "captcha CDN accessed too many times, now expired & deleted",
+                    }
+                ),
+                418,
+            )
 
         flask_app.captcha_cdn[key]["cdn_accessed_number"] += 1
 
@@ -105,30 +113,40 @@ def api_captcha():
         dict: A JSON dictionary containing the captcha ID and its related information.
 
     """
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
     cdn_access = data.get("maxCdnAccess", 5)
     solution_check = data.get("maxSolutionCheck", 5)
 
     if cdn_access >= 20 or cdn_access <= 0:
-        return jsonify({
-            "type": "error",
-            "code": 400,
-            "text": "maxCdnAccess is over 20. default is 5 max is 20, min is 1"
-        }), 400
+        return (
+            jsonify(
+                {
+                    "type": "error",
+                    "code": 400,
+                    "text": "maxCdnAccess is over 20. default is 5 max is 20, min is 1",
+                }
+            ),
+            400,
+        )
 
     if solution_check >= 20 or solution_check <= 0:
-        return jsonify({
-            "type": "error",
-            "code": 400,
-            "text": "maxSolutionCheck is over 20. default is 5 max is 20, min is 1"}
-        ), 400
+        return (
+            jsonify(
+                {
+                    "type": "error",
+                    "code": 400,
+                    "text": "maxSolutionCheck is over 20. default is 5 max is 20, min is 1",
+                }
+            ),
+            400,
+        )
 
     solution_id = _b64_encrypt_id()
     solution = _id_generator(y=secrets.choice((4, 5)))
     flask_app.captchas_solution[solution_id] = {
         "solution": solution,
         "max_solution_check": solution_check,
-        "solution_checked": 0
+        "solution_checked": 0,
     }
 
     delta = datetime.timedelta(minutes=5)
@@ -140,7 +158,7 @@ def api_captcha():
         "time": now + delta,
         "cdn_accessed_number": 0,
         "max_cdn_access": cdn_access,
-        "solution_id": solution_id
+        "solution_id": solution_id,
     }
     flask_app.captcha_count += 1
 
@@ -159,40 +177,49 @@ def api_captcha():
 @flask_app.route("/api/v5/check/<solution_id>", methods=["POST"])
 @limiter.limit("10/minute")
 def check_solution(solution_id: str):
-        if (
-                flask_app.captchas_solution[solution_id]["solution_checked"] >=
-                flask_app.captchas_solution[solution_id]["max_solution_check"]
-        ):
-            # We do not delete it from flask_app.captcha_cdn; let TTL cache GC handle it
-            del flask_app.captchas_solution[solution_id]
+    if solution_id not in flask_app.captchas_solution:
+        return {"type": "error", "code": 400, "text": "solution_id not found"}, 400
 
-            return jsonify({
-                "code": 418,
-                "type": "error",
-                "text": "this route has been accessed too many times. records now expired & deleted"}
-            ), 418
+    if (
+        flask_app.captchas_solution[solution_id]["solution_checked"]
+        >= flask_app.captchas_solution[solution_id]["max_solution_check"]
+    ):
+        # We do not delete it from flask_app.captcha_cdn; let TTL cache GC handle it
+        del flask_app.captchas_solution[solution_id]
 
-        flask_app.captchas_solution[solution_id]["solution_checked"] += 1
+        return (
+            jsonify(
+                {
+                    "code": 418,
+                    "type": "error",
+                    "text": "this route has been accessed too many times. records now expired & deleted",
+                }
+            ),
+            418,
+        )
 
-        data = {"case_sensitive_correct": False, "case_insensitive_correct": False}
+    flask_app.captchas_solution[solution_id]["solution_checked"] += 1
 
-        rq_data = request.get_json()
-        attempt = rq_data.get("attempt")
-        captcha_data = flask_app.captchas_solution.get(solution_id)
+    data = {"case_sensitive_correct": False, "case_insensitive_correct": False}
 
-        if not captcha_data:
-            return {"type": "error", "code": 400, "text": "solution_id not found"}, 400
+    rq_data = request.get_json()
+    attempt = rq_data.get("attempt")
+    captcha_data = flask_app.captchas_solution.get(solution_id)
 
-        if not attempt:
-            return {"type": "error", "code": 400, "text": "attempt not found in HTTP json"}, 400
+    if not attempt:
+        return {
+            "type": "error",
+            "code": 400,
+            "text": "attempt not found in HTTP json",
+        }, 400
 
-        if attempt == captcha_data["solution"]:
-            data["case_sensitive_correct"] = True
+    if attempt == captcha_data["solution"]:
+        data["case_sensitive_correct"] = True
 
-        if attempt.lower() == captcha_data["solution"].lower():  # type: ignore
-            data["case_insensitive_correct"] = True
+    if attempt.lower() == captcha_data["solution"].lower():  # type: ignore
+        data["case_insensitive_correct"] = True
 
-        return jsonify(data)
+    return jsonify(data)
 
 
 @flask_app.route("/examples", methods=["GET"])
@@ -216,10 +243,13 @@ def not_found(_):
 @flask_app.errorhandler(429)
 def ratelimited(_):
     """429 error handling"""
-    return jsonify({"type": "ratelimited", "code": 429, "text": "too fast"})
+    return jsonify({"type": "ratelimited", "code": 429, "text": "too fast"}), 429
 
 
 @flask_app.errorhandler(405)
 def method_not_allowed(_):
     """405 Method Not Allowed"""
-    return jsonify({"type": "not allowed", "code": 405, "text": "method not allowed"})
+    return (
+        jsonify({"type": "not allowed", "code": 405, "text": "method not allowed"}),
+        405,
+    )

@@ -5,9 +5,7 @@ from flask import Response
 
 def test_cdn(client: Any, captcha_data: dict):
     """Check normal route usage"""
-    response: Union[Response, Any] = client.get(
-        captcha_data["cdn_url"]
-    )
+    response: Union[Response, Any] = client.get(captcha_data["cdn_url"])
     assert isinstance(response, Response)
 
 

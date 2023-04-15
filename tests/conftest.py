@@ -18,6 +18,8 @@ def client() -> "FlaskClient":
 
 @pytest.fixture
 def captcha_data(client: "FlaskClient") -> dict:
-    response: Union["Response", Any] = client.post("/api/v5/captcha", json={"maxCdnAccess": 1, "maxSolutionCheck": 1})
+    response: Union["Response", Any] = client.post(
+        "/api/v5/captcha", json={"maxCdnAccess": 1, "maxSolutionCheck": 1}
+    )
 
     return json.loads(response.data)

@@ -7,7 +7,9 @@ if TYPE_CHECKING:
 
 def test_api_captcha_internal(client: Any):
     """Check normal route usage"""
-    response: Union["Response", Any] = client.post("/api/v5/captcha", json={"maxCdnAccess": 5, "maxSolutionCheck": 5})
+    response: Union["Response", Any] = client.post(
+        "/api/v5/captcha", json={"maxCdnAccess": 5, "maxSolutionCheck": 5}
+    )
     assert response.status_code == 200
 
     data = json.loads(response.data)
@@ -23,14 +25,17 @@ def test_api_captcha_internal(client: Any):
     )
 
     # GC
-    del client.application.captchas_solution[client.application.captcha_cdn[data["cdn_id"]]["solution_id"]]
+    del client.application.captchas_solution[
+        client.application.captcha_cdn[data["cdn_id"]]["solution_id"]
+    ]
     del client.application.captcha_cdn[data["cdn_id"]]
-
 
 
 def test_api_captcha_maxcdnaccess(client: Any):
     """Check error handling"""
-    response = client.post("/api/v5/captcha", json={"maxCdnAccess": 25, "maxSolutionCheck": 5})
+    response = client.post(
+        "/api/v5/captcha", json={"maxCdnAccess": 25, "maxSolutionCheck": 5}
+    )
     assert response.status_code == 400
 
     data = json.loads(response.data)
@@ -41,7 +46,9 @@ def test_api_captcha_maxcdnaccess(client: Any):
 
 def test_api_captcha_maxsolution_check(client: Any):
     """Check error handling"""
-    response = client.post("/api/v5/captcha", json={"maxCdnAccess": 5, "maxSolutionCheck": 25})
+    response = client.post(
+        "/api/v5/captcha", json={"maxCdnAccess": 5, "maxSolutionCheck": 25}
+    )
     assert response.status_code == 400
 
     data = json.loads(response.data)

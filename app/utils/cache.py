@@ -1,15 +1,7 @@
 """TTL Cache implementation for the Flask API"""
 
 import datetime
-from typing import (
-    Generic,
-    TypeVar,
-    Hashable,
-    Generator,
-    Optional,
-    overload,
-    Union
-)
+from typing import Generic, TypeVar, Hashable, Generator, Optional, overload, Union
 from collections.abc import MutableMapping
 
 
@@ -80,10 +72,12 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
         return str(self.cache)
 
     @overload
-    def get(self, item: KT, /) -> Optional[VT]: ...
+    def get(self, item: KT, /) -> Optional[VT]:
+        ...
 
     @overload
-    def get(self, item: KT, /, default: T) -> Union[VT, T]: ...
+    def get(self, item: KT, /, default: T) -> Union[VT, T]:
+        ...
 
     def get(self, item: KT, /, default: Optional[T] = None) -> Union[VT, T, None]:
         self.__check_expiry()
