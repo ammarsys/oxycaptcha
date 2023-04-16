@@ -213,7 +213,7 @@ def check_solution(solution_id: str):
             "text": "attempt not found in HTTP json",
         }, 400
 
-    if attempt == captcha_data["solution"]:
+    if attempt == captcha_data["solution"]:  # type: ignore
         data["case_sensitive_correct"] = True
 
     if attempt.lower() == captcha_data["solution"].lower():  # type: ignore
