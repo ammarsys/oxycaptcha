@@ -6,6 +6,7 @@ import math
 import os
 
 from PIL import ImageDraw, Image, ImageFont
+from PIL.Image import Transform, Resampling
 
 
 FONTS_LOWER = [
@@ -119,7 +120,7 @@ def text_angled(
     """
     draw = ImageDraw.Draw(img)
 
-    text_width, text_height = draw.multiline_textsize(text, font=font)
+    _, text_width, _, text_height = draw.multiline_textbbox(xy, text, font=font)
 
     # Create new image for the font
     rotated_text_img = Image.new(
@@ -134,9 +135,9 @@ def text_angled(
             int(rotated_text_img.width + abs(coeffs[1] * rotated_text_img.height)),
             rotated_text_img.height,
         ),
-        Image.AFFINE,
+        Transform.AFFINE,
         coeffs,
-        Image.BICUBIC,
+        Resampling.BICUBIC,
     )
     rotated_text_img = rotated_text_img.rotate(rot_angle, expand=True)
 
