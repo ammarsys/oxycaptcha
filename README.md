@@ -6,7 +6,7 @@
 
 <i>Fast, secure, adaptable captcha API made with Flask.</i>
 
-![image](https://cdn.discordapp.com/attachments/1085992233536335982/1086430183604629564/image.png)
+![image](https://cdn.discordapp.com/attachments/995797406404857977/1104183215377354762/image.png)
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
