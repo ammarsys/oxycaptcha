@@ -221,13 +221,6 @@ def check_solution(solution_id: str):
 
     return jsonify(data)
 
-
-@flask_app.route("/examples", methods=["GET"])
-def examples():
-    """API examples endpoint"""
-    return render_template("examples.html")
-
-
 @flask_app.route("/", methods=["GET"])
 def home():
     """API home"""

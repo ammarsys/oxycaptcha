@@ -3,48 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/1d02673a32.js" crossorigin="anonymous"></script>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/index.css') }}">
-    <meta property="og:site_name" content="CAPTCHA API">
-	<meta property="og:title" content="Auth Systems">
-	<meta property="og:description" content="A lightweight Captcha API made with Flask">
-	<meta property="og:type" content="website">
-	<meta name="theme-color" content="#0000FF">
-    <title>Captcha API</title>
+    <title>oxycaptcha</title>
 </head>
 <body>
     <script>
 
-        function goTo(place) {
-            window.location.href = `${place}`
+        function goTo() {
+            window.location.href = "https://github.com/ammarsys/oxycaptcha";
         }
 
+        window.onload = goTo;
     </script>
-    <div class="main">
-        <div class="icons">
-            <div class="lefticons">
-                <button onclick="goTo('https://discord.gg/Fh5gmXQ')" type="button" class="btn btn-dark" style="width: 50px; height: 50px;"><i class="fab fa-discord"></i></button>
-                <label class="space"></label>
-                <button onclick="goTo('https://github.com/ammarsys/captchaapi')" type="button" class="btn btn-dark" style="width: 50px; height: 50px;"><i class="fab fa-github"></i></button>
-            </div>
 
-            <div class="righticons">
-                <button onclick="goTo('/')" type="button" class="btn btn-dark" style="width: 50px; height: 50px;"><i class="fas fa-home"></i></button>
-            </div>
-        </div>
-
-        <label class="space"></label>
-        <h1>Captcha API</h1>
-        <br><hr><br>
-
-        <div class="centerbuttons">
-            <button onclick="goTo('/api/v5/captcha')" type="button" class="btn btn-secondary" style="min-width: 50%; background: #394660;">Main Endpoint</button>
-            <label class="minispace"></label>
-            <button onclick="goTo('/examples')" type="button" class="btn btn-secondary" style="min-width: 50%; background: #394660;">Examples</button>
-        </div>
-    </div>
+    <p>Redirecting you to the GitHub readme...</p>
 </body>
 </html>
