@@ -24,27 +24,31 @@
 <h2 id="usage">Usage</h2>
 <p>Examples on how to integrate the API are <a href="https://oxycaptcha.pythonanywhere.com/examples">here</a>. However, the usage really boils down
 to making simple HTTP requests,</p>
-<pre class=" language-python"><code class="prism  language-python"><span class="token keyword">import</span> requests
+
+<pre class=" language-py"><code class="prism  language-py"><span class="token keyword">import</span> requests
 <span class="token keyword">from</span> io <span class="token keyword">import</span> BytesIO
 <span class="token keyword">from</span> PIL <span class="token keyword">import</span> Image
 
 captcha_data <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"http://127.0.0.1:5000/api/v5/captcha"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
 captcha_image_content <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>captcha_data<span class="token punctuation">[</span><span class="token string">"cdn_url"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>content
 
-<span class="token comment"># Show the image to the user  </span>
+<span class="token comment"># Show the image to the user</span>
 Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span>BytesIO<span class="token punctuation">(</span>captcha_image_content<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 attempt <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token string">"What does the captcha say? &gt;&gt; "</span><span class="token punctuation">)</span>
 
 solution_check <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span>
-	captcha_data<span class="token punctuation">[</span><span class="token string">"solution_check_url"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-	json<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">"attempt"</span><span class="token punctuation">:</span> attempt<span class="token punctuation">}</span>
+    captcha_data<span class="token punctuation">[</span><span class="token string">"solution_check_url"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    json<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">"attempt"</span><span class="token punctuation">:</span> attempt<span class="token punctuation">}</span>
 <span class="token punctuation">)</span><span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token keyword">if</span> solution_check<span class="token punctuation">[</span><span class="token string">"case_sensitive_correct"</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
-	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Good job! That attempt was right."</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Good job! That attempt was right."</span><span class="token punctuation">)</span>
 <span class="token keyword">else</span><span class="token punctuation">:</span>
-	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Err, not quite."</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Err, not quite."</span><span class="token punctuation">)</span>
 </code></pre>
+
+<h2 id="api-documentations">API Documentations</h2>
+<p>You can find the API documentations <a href="https://oxycaptcha.pythonanywhere.com/docs">here</a>.</p>
 <h2 id="contributing">Contributing</h2>
 <p>Contributions are always welcome! In the <a href="https://github.com/ammarsys/oxycaptcha/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>, you will find instructions &amp; current TODO list.</p>
 </div>

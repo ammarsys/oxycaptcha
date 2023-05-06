@@ -27,7 +27,7 @@ import requests
 from io import BytesIO
 from PIL import Image
 
-captcha_data = requests.post("http://127.0.0.1:5000/api/v5/captcha").json()
+captcha_data = requests.post("https://oxycaptcha.pythonanywhere.com/api/v5/captcha").json()
 captcha_image_content = requests.get(captcha_data["cdn_url"]).content
 
 # Show the image to the user
