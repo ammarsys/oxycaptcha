@@ -36,9 +36,9 @@ attempt = input("What does the captcha say? >> ")
 
 solution_check = requests.post(captcha_data["solution_check_url"], json={"attempt": attempt}).json()
 if solution_check["case_sensitive_correct"] == True:
-	print("Good job! That attempt was right.")
+    print("Good job! That attempt was right.")
 else:
-	print("Err, not quite.")
+    print("Err, not quite.")
 ```
 
 ## API Documentations
