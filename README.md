@@ -2,7 +2,7 @@
 
 ### This repository is currently being remade & the API is not being hosted yet.
 
-# <span style="color: #1a68c5;">oxy</span>captcha
+<h1> <span style="color: #1a68c5;">oxy</span>captcha </h1>
 
 <i>Fast, secure, adaptable captcha API made with Flask.</i>
 
