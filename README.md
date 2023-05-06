@@ -38,6 +38,7 @@ solution_check = requests.post(
     captcha_data["solution_check_url"], 
     json={"attempt": attempt}
 ).json()
+
 if solution_check["case_sensitive_correct"] == True:
     print("Good job! That attempt was right.")
 else:
