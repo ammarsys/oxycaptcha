@@ -1,20 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <title>oxycaptcha</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
-<body>
-    <script>
 
-        function goTo() {
-            window.location.href = "https://github.com/ammarsys/oxycaptcha";
-        }
+<body class="stackedit" style="background-color: #22272e; color: white">
+  <div class="stackedit__html">
 
-        window.onload = goTo;
-    </script>
+      <div align="center">
+          <h1 id="oxycaptcha"><span style="color: #1a68c5;">oxy</span>captcha</h1>
+<p style="margin-top: -5%;"><i>Fast, secure, adaptable captcha API made with Flask.</i></p>
+<p><img src="https://cdn.discordapp.com/attachments/995797406404857977/1104183215377354762/image.png" alt="image"></p>
+<p><a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" alt="made-with-python"></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a></p>
+</div>
+<p>This is a free-to-use, integrate-yourself Captcha API built with Python.
+    It provides a Captcha, and it’s solution, which makes it possible to be implemented anywhere with a bit of work (e.g. webapps, Discord Bots).</p>
+<p>You can find the projects’ GitHub repository <a href="https://github.com/ammarsys/oxycaptcha">here</a>.</p>
+<h2 id="usage">Usage</h2>
+<p>Examples on how to integrate the API are <a href="https://oxycaptcha.pythonanywhere.com/examples">here</a>. However, the usage really boils down
+to making simple HTTP requests,</p>
+<pre class=" language-python"><code class="prism  language-python"><span class="token keyword">import</span> requests
 
-    <p>Redirecting you to the GitHub readme...</p>
+<span class="token comment"># This is boilerplate code! It does not work currently as we haven't released v5.0.0 yet.</span>
+response <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'https://oxycaptcha.pythonanywhere.com/api/v5/captcha'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="contributing">Contributing</h2>
+<p>Contributions are always welcome! In the <a href="https://github.com/ammarsys/oxycaptcha/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>, you will find instructions &amp; current TODO list.</p>
+</div>
 </body>
+
 </html>

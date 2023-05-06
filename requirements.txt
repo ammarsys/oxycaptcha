@@ -1,6 +1,5 @@
 Flask
 Flask_Cors
 Pillow
-secrets
 flask_login
 flask_limiter
