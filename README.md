@@ -47,7 +47,7 @@ else:
 
 ## API Documentations
 
-You can find the API documentations [here](https://oxycaptcha.pythonanywhere.com/docs)
+You can find the API documentations [here](https://oxycaptcha.pythonanywhere.com/docs).
 
 ## Contributing
 
