@@ -15,20 +15,35 @@
 This is a free-to-use, integrate-yourself Captcha API built with Python. 
 It provides a Captcha, and it's solution, which makes it possible to be implemented anywhere with a bit of work (e.g. webapps, Discord Bots).
 
-You can find the projects' homepage (and the API documentations) [here](https://google.com/).
+You can find the projects' homepage [here](https://oxycaptcha.pythonanywhere.com/).
 
 ## Usage
 
-Examples on how to integrate the API are [here](https://google.com/). However, the usage really boils down
+Examples on how to integrate the API are [here](https://oxycaptcha.pythonanywhere.com/examples). However, the usage really boils down
 to making simple HTTP requests,
 
 ```python
 import requests
+from io import BytesIO
+from PIL import Image
 
-# This is boilerplate code! It does not work currently as we haven't released v5.0.0 yet.
-response = requests.get('https://oxycaptcha.pythonanywhere.com/api/v5/captcha').json()
-print(response)
+captcha_data = requests.post("http://127.0.0.1:5000/api/v5/captcha").json()
+captcha_image_content = requests.get(captcha_data["cdn_url"]).content
+
+# Show the image to the user
+Image.open(BytesIO(img)).show()
+attempt = input("What does the captcha say? >> ")
+
+solution_check = requests.post(captcha_data["solution_check_url"], json={"attempt": attempt}).json()
+if solution_check["case_sensitive_correct"] == True:
+    print("Good job! That attempt was right.")
+else:
+    print("Err, not quite.")
 ```
+
+## API Documentations
+
+You can find the API documentations [here](https://oxycaptcha.pythonanywhere.com/docs)
 
 ## Contributing
 
