@@ -10,10 +10,13 @@ information on any of the bullet points `ammar.#7568`.
 **Being worked on**
 - Fine-tuning captcha generation
 - Front end website
-- Z-Axis 3d simulation captcha (each letter) rotation
 
 **Not being worked on yet**
-- Better fonts
+- /
+
+**Finished**
+- ~~Better fonts~~
+- ~~Z-Axis 3d simulation captcha (each letter) rotation~~
 
 ### Contributing Guidelines
 
