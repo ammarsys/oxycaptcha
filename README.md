@@ -19,8 +19,7 @@ You can find the projects' homepage [here](https://oxycaptcha.pythonanywhere.com
 
 ## Usage
 
-Examples on how to integrate the API are [here](https://oxycaptcha.pythonanywhere.com/examples). However, the usage really boils down
-to making simple HTTP requests,
+The usage really boils down to making simple HTTP requests,
 
 ```python
 import requests
