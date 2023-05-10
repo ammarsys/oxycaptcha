@@ -221,6 +221,7 @@ def check_solution(solution_id: str):
 
     return jsonify(data)
 
+
 @flask_app.route("/", methods=["GET"])
 def home():
     """API home"""
@@ -246,3 +247,9 @@ def method_not_allowed(_):
         jsonify({"type": "not allowed", "code": 405, "text": "method not allowed"}),
         405,
     )
+
+
+@flask_app.route("/docs")
+def examples():
+    """Examples"""
+    return render_template("docs.html")

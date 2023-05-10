@@ -28,7 +28,9 @@
 <span class="token keyword">from</span> io <span class="token keyword">import</span> BytesIO
 <span class="token keyword">from</span> PIL <span class="token keyword">import</span> Image
 
-captcha_data <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span><span class="token string">"http://127.0.0.1:5000/api/v5/captcha"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
+captcha_data <span class="token operator">=</span> requests<span class="token punctuation">.</span>post<span class="token punctuation">(</span>
+    <span class="token string">"https://oxycaptcha.pythonanywhere.com/api/v5/captcha"</span>
+<span class="token punctuation">)</span><span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span>
 captcha_image_content <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>captcha_data<span class="token punctuation">[</span><span class="token string">"cdn_url"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>content
 
 <span class="token comment"># Show the image to the user</span>

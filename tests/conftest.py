@@ -22,4 +22,6 @@ def captcha_data(client: "FlaskClient") -> dict:
         "/api/v5/captcha", json={"maxCdnAccess": 1, "maxSolutionCheck": 1}
     )
 
+    print(response)
+
     return json.loads(response.data)

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oxycaptcha</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit" style="background-color: #22272e; color: white">
+  <div class="stackedit__html"><h1 id="api-documentations">API documentations</h1>
+<p>This page is an overview of all the API routes of the oxycaptcha project.</p>
+      <h2 id="apiv5captcha"><span style="background-color: #272e22">/api/v5/captcha</span></h2>
+      <code>METHOD: POST</code><br>
+<code>RATELIMIT: 30/minute</code><br>
+    <details>
+        <hr>
+          <summary><code>JSON PARAMETERS: maxCdnAccess; maxSolutionCheck</code></summary>
+        <h4 id="maxcdnaccess"><span style="background-color: #2e222d">maxCdnAccess</span></h4>
+<p><code>DEFAULT: 5</code><br>
+<code>TYPE: INTEGER</code></p>
+<p>A parameter which indicates number of times the captcha image (<code>/api/v5/cdn/id</code>) can be accessed before it is wiped from the oxycaptcha system.</p>
+        <h4 id="maxsolutioncheck"><span style="background-color: #2e222d">maxSolutionCheck</span></h4>
+<p><code>DEFAULT: 5</code><br>
+<code>TYPE: INTEGER</code></p>
+<p>A parameter which indicates number of times that a user can <em>check if a captcha solve attempt was right</em>. In other words, number of times you can post to
+<code>/api/v5/check/id</code> before the captcha is wiped from the oxycaptcha system.</p>
+        <hr>
+      </details>
+<p>This is the “main” route of the API. It creates a captcha for you in the system and returns identifying information in the response JSON body.</p>
+<h4 id="examples">Examples</h4>
+      <details>
+          <summary><code>EXAMPLE POST JSON</code><br></summary>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+<span class="token string">"maxSolutionCheck"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+<span class="token string">"maxCdnAccess"</span><span class="token punctuation">:</span> <span class="token number">7</span>
+<span class="token punctuation">}</span></code></pre>
+    </details>
+      <details>
+          <summary><code>EXAMPLE JSON RETURN</code></summary>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+<span class="token string">'cdn_id'</span><span class="token punctuation">:</span> <span class="token string">'MC5aZFp2SkJ2cmp6LjQ4'</span><span class="token punctuation">,</span>
+<span class="token string">'cdn_url'</span><span class="token punctuation">:</span> <span class="token string">'https://oxycaptcha.pythonanywhere.com/api/v5/cdn/MC5aZFp2SkJ2cmp6LjQ4'</span><span class="token punctuation">,</span>
+<span class="token string">'solution_check_url'</span><span class="token punctuation">:</span> <span class="token string">'https://oxycaptcha.pythonanywhere.com/api/v5/check/MC5ITkp1clJFY3VhLjQ4'</span><span class="token punctuation">,</span>
+<span class="token string">'solution_id'</span><span class="token punctuation">:</span> <span class="token string">'MC5ITkp1clJFY3VhLjQ4'</span>
+<span class="token punctuation">}</span>
+</code></pre>
+          </details>
+<br>
+      <h2 id="apiv5cdnltkeygt"><span style="background-color: #272e22">/api/v5/cdn/&lt;key&gt;</span></h2>
+<p><code>METHOD: GET</code><br>
+<code>RATELIMIT: 30/minute</code><br>
+<code>URL PARAMETERS: key</code></p>
+<p>The CDN system for the API. Specifically reserved for captcha images. This is NOT a private route. It is safe to share the URL.</p>
+<h4 id="examples">Examples</h4>
+      <details>
+          <summary><code>EXAMPLE GET URL</code><br></summary>
+          <p><code>https://oxycaptcha.pythonanywhere.com/api/v5/cdn/MC5aZFp2SkJ2cmp6LjQ4</code></p>
+</details>
+    <details>
+          <summary><code>EXAMPLE RETURN</code></summary>
+<img src="https://camo.githubusercontent.com/bd5bfcf38ce10c645a13b0e88fa84794d79f8c45e996555d7b89b40421de07f0/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3939353739373430363430343835373937372f313130343138333231353337373335343736322f696d6167652e706e67">
+<p> You will need to, of course, parse the image in your programming language of choice.
+    </details>
+
+<br>
+      <h2 id="apiv5checkltidgt"><span style="background-color: #272e22">/api/v5/check/&lt;id&gt;</span></h2>
+<code>METHOD: POST</code><br>
+<code>RATELIMIT: 10/minute</code><br>
+<code>URL PARAMETERS: key</code><br>
+    <details>
+        <hr>
+        <summary><code>JSON PARAMETERS: attempt</code></summary>
+        <h4 id="attempt"><span style="background-color: #2e222d">attempt</span></h4>
+<p><code>DEFAULT: NULL</code><br>
+<code>TYPE: STRING</code></p>
+<p>The captcha solution attempt. This argument must be provided.</p>
+        <hr>
+      </details>
+<p>This route is used for solution validation. This <em>IS</em> a private route, so do not share the URL. The identifying key for it is different from ones for CDN.</p>
+      <h4 id="examples">Examples</h4>
+      <details>
+          <summary><code>EXAMPLE POST URL</code><br></summary>
+          <pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+<span class="token string">"attempt"</span><span class="token punctuation">:</span> <span class="token string">"SkfTg"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </details>
+
+      <details>
+          <summary><code>EXAMPLE JSON RETURN</code><br></summary>
+          <pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+<span class="token string">"case_insensitive_correct"</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+<span class="token string">"case_sensitive_correct"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span></code></pre>
+      </details>
+      <Details>
+          <summary><code>EXAMPLE POST JSON</code></summary>
+          <pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+<span class="token string">"attempt"</span><span class="token punctuation">:</span> <span class="token string">"SkfTg"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+      </Details>
+<br>
+</div>
+</body>
+
+</html>
