@@ -95,7 +95,7 @@ def get_img(key: str):
         return jsonify({"code": 400, "type": "error", "text": "cdn key not found"}), 400
 
 
-@flask_app.route("/api/v5/captcha", methods=["POST"])
+@flask_app.route("/api/v5/captcha", methods=["POST", "GET"])
 @limiter.limit("30/minute")
 def api_captcha():
     """
