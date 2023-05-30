@@ -7,6 +7,32 @@
   <title>oxycaptcha</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
+<style>
+    .btn {
+
+                    cursor: pointer;
+                    outline: 0;
+                    color: #fff;
+                    background-color: #616f83;
+                    border-color: #616f83;
+                    display: inline-block;
+                    font-weight: 400;
+                    line-height: 1.5;
+                    text-align: center;
+                    border: 1px solid transparent;
+                    padding: 6px 12px;
+                    font-size: 16px;
+                    border-radius: .25rem;
+                    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+                    :hover {
+                        color: #fff;
+                        background-color: #0b5ed7;
+                        border-color: #0a58ca;
+                    }
+
+    }
+
+</style>
 
 <body class="stackedit" style="background-color: #22272e; color: white">
   <div class="stackedit__html">
@@ -22,6 +48,7 @@
     It provides a Captcha, and it’s solution, which makes it possible to be implemented anywhere with a bit of work (e.g. webapps, Discord Bots).</p>
 <p>You can find the projects’ GitHub repository <a href="https://github.com/ammarsys/oxycaptcha">here</a>.</p>
 <h2 id="usage">Usage</h2>
+      <button type="button" onclick="window.open('/api/v5/captcha')" class="btn">Click to go to the main API route</button>
 <p>The usage really boils down to making simple HTTP requests,</p>
 
 <pre class=" language-py"><code class="prism  language-py"><span class="token keyword">import</span> requests
