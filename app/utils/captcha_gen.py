@@ -9,30 +9,34 @@ from PIL import ImageDraw, Image, ImageFont
 from PIL.Image import Transform, Resampling
 
 
+script_path = os.path.abspath(__file__)
+root_directory = os.path.dirname(os.path.dirname(script_path))
+
+
 FONTS_LOWER = [
     ImageFont.truetype(
-        os.path.join("app", "static", "fonts", "lower", "gadugi-bold.ttf"), 30
+        os.path.join(root_directory, "static", "fonts", "lower", "gadugi-bold.ttf"), 30
     ),
     ImageFont.truetype(
-        os.path.join("app", "static", "fonts", "lower", "Chalkduster_400.ttf"), 34
+        os.path.join(root_directory, "static", "fonts", "lower", "Chalkduster_400.ttf"), 34
     ),
     ImageFont.truetype(
-        os.path.join("app", "static", "fonts", "lower", "RobotoSlab-Black.ttf"), 34
+        os.path.join(root_directory, "static", "fonts", "lower", "RobotoSlab-Black.ttf"), 34
     ),
 ]
 
 FONTS_UPPER = [
     ImageFont.truetype(
-        os.path.join("app", "static", "fonts", "upper", "arial.ttf"), 60
+        os.path.join(root_directory, "static", "fonts", "upper", "arial.ttf"), 60
     ),
     ImageFont.truetype(
-        os.path.join("app", "static", "fonts", "upper", "FallingSky-JKwK.ttf"), 60
+        os.path.join(root_directory, "static", "fonts", "upper", "FallingSky-JKwK.ttf"), 60
     ),
     ImageFont.truetype(
-        os.path.join("app", "static", "fonts", "upper", "TrainOne-Regular.ttf"), 60
+        os.path.join(root_directory, "static", "fonts", "upper", "TrainOne-Regular.ttf"), 60
     ),
     ImageFont.truetype(
-        os.path.join("app", "static", "fonts", "upper", "BebasNeue-Regular.ttf"), 60
+        os.path.join(root_directory, "static", "fonts", "upper", "BebasNeue-Regular.ttf"), 60
     ),
 ]
 
