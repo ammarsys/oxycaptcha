@@ -99,5 +99,4 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
             if not _check_if_expired(value[1]):
                 break
 
-            print("Removing", key, value, " because its expired")
             self.cache.pop(key)
