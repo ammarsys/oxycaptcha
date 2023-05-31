@@ -98,3 +98,6 @@ class TTLCache(MutableMapping[KT, VT], Generic[KT, VT]):
         for key, value in reversed(list(self.cache.items())):
             if not _check_if_expired(value[1]):
                 break
+
+            print("Removing", key, value, " because its expired")
+            self.cache.pop(key)
